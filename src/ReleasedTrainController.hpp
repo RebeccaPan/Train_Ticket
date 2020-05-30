@@ -2,17 +2,30 @@
 #define RELEASED_TRAIN_CONTROLLER_HPP
 
 #include <fstream>
+#include "const_variable.hpp"
 #include "Date.hpp"
 
 class Interface;
 
 class ReleasedTrainController {
+	Interface *itf;
+	enum {SUM = 100};
+
+	struct Char{
+		char str[USERNAME_LEN];
+		Char(const char username[]) {
+			for (int i = 0; i < USERNAME_LEN; ++i) str[i] = username[i];
+		}
+		void copy(char username[]) const{
+			for (int i = 0; i < USERNAME_LEN; ++i) username[i] = str[i];
+		}
+	};
+
 public:
 	std::fstream ticket_file;
 	std::fstream que_btree_file;
 	std::fstream que_info_file;
-	Interface *interface;
-	
+
 	void release_train( const char train_id[] );
 	void query_train( const char train_id[], Date date );
 	void modify_ticket( const char train_id[],
@@ -36,7 +49,7 @@ public:
 					  const char from[],
 					  const char to[] );
 	
-	void load( Interface *ifs );
+	void load(Interface *interface);
 	void save();
 };
 
