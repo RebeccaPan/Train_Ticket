@@ -1,23 +1,23 @@
 #include "includes.hpp"
 
 Train::Train(const char _train_id[],
-		  int _station_num,
-		  int _seat_num,
-		  const char _stations[][STATION_LEN],
-		  int _prices[],
-		  Time _start_time,
-		  int _travel_times[],
-		  int _stopover_times[],
-		  Date _sale_date_begin,
-		  Date _sale_date_end,
-		  char _type,
-		  bool _deleted,
-		  int _create_time):
-          station_num(_station_num),
-          seat_num(_seat_num),
-          type(_type),
-          deleted(_deleted),
-          create_time(_create_time) {
+		     int _station_num,
+		     int _seat_num,
+		     const char _stations[][STATION_LEN],
+		     int _prices[],
+		     Time _start_time,
+		     int _travel_times[],
+		     int _stopover_times[],
+		     Date _sale_date_begin,
+		     Date _sale_date_end,
+		     char _type,
+		     bool _deleted,
+		     int _create_time):
+             station_num(_station_num),
+             seat_num(_seat_num),
+             type(_type),
+             deleted(_deleted),
+             create_time(_create_time) {
     strcpy(train_id, _train_id);
     for (int i = 0; i < STATION_LEN; ++i) {
         strcpy(stations[i], _stations[i]);
@@ -32,28 +32,10 @@ Train::Train(const char _train_id[],
     sale_date_end = _sale_date_end;
 }
 
-/*Train::Train( const Train &other ):
-            privilege(other.privilege),
-            create_time(other.create_time),
-            order_cnt(other.order_cnt),
-            is_login(other.is_login)
-                {
-    strcpy(username,  other.username);
-    strcpy(password,  other.password);
-    strcpy(name,      other.name);
-    strcpy(mail_addr, other.mail_addr);
+/*Train::Train( const Train &other ) {
 }*/
 
 Train::~Train() {}
 
 /*Train &Train::operator=( const User &other ) {
-    if (this == &other) return *this;
-    privilege   = other.privilege;
-    create_time = other.create_time;
-    order_cnt   = other.order_cnt;
-    is_login    = other.is_login;
-    strcpy(username,  other.username);
-    strcpy(password,  other.password);
-    strcpy(name,      other.name);
-    strcpy(mail_addr, other.mail_addr);
 }*/
