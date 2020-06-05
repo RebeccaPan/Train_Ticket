@@ -3,7 +3,7 @@
 Order::Order(const char _username[],
 		  int _order_id,
 		  int _status,
-		  char _train_id[],
+		  char _train_id[],// QUESTION: should I write `const char` or `char`?
 		  char _from[],
 		  char _to[],
 		  Date _sale_date,
@@ -19,7 +19,7 @@ Order::Order(const char _username[],
     strcmp(train_id, _train_id);
     strcmp(from, _from);
     strcmp(to, _to);
-    sale_date = _sale_date; // Warning: no operator= for class Date
+    sale_date = _sale_date; // WARNING: no operator= for class Date
 }
 
 Order::~Order() {}

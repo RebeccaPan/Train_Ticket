@@ -8,7 +8,7 @@ class Interface;
 
 class UserController {
 public:
-	int user_cnt; // Warning: init value yet to be set as 0
+	int user_cnt; // WARNING: init value yet to be set as 0
 	std::fstream btree_file; // updated
 	std::fstream info_file; // updated
 	Interface *interface;

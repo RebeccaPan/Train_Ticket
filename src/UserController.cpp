@@ -102,7 +102,7 @@ void UserController::modify_profile( const char cur_username[],
     if (!cur_user.is_login) {printf("-1\n"); return;}
     if ((strcmp(cur_username, username) == 0) || (cur_user.privilege > todo_user.privilege)) {
         strcpy(todo_user.username, username);
-        // WARNING: not quite sure with the following 4 lines
+        // WARNING: not quite sure with the following 4 lines...担心strcpy会不会溢出
         if (strcmp(password, "") != 0) strcpy(todo_user.password, password);
         if (strcmp(name, "") != 0) strcpy(todo_user.name, name);
         if (strcmp(mail_addr, "") != 0) strcpy(todo_user.mail_addr, mail_addr);

@@ -23,9 +23,9 @@ public:
 		int _create_time,
 		int _order_cnt,
 		int _is_login );
-	User( const User &other );
+	// User( const User &other );
 	~User();
-	User &operator=( const User &other );
+	// User &operator=( const User &other );
 };
 
 #endif // USER_HPP

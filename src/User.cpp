@@ -18,7 +18,7 @@ User::User( const char _username[],
     strcpy(mail_addr, _mail_addr);
 }
 
-User::User( const User &other ):
+/*User::User( const User &other ):
             privilege(other.privilege),
             create_time(other.create_time),
             order_cnt(other.order_cnt),
@@ -28,11 +28,11 @@ User::User( const User &other ):
     strcpy(password,  other.password);
     strcpy(name,      other.name);
     strcpy(mail_addr, other.mail_addr);
-}
+}*/
 
 User::~User() {}
 
-User &User::operator=( const User &other ) {
+/*User &User::operator=( const User &other ) {
     if (this == &other) return *this;
     privilege   = other.privilege;
     create_time = other.create_time;
@@ -42,4 +42,4 @@ User &User::operator=( const User &other ) {
     strcpy(password,  other.password);
     strcpy(name,      other.name);
     strcpy(mail_addr, other.mail_addr);
-}
+}*/
