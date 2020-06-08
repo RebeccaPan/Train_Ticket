@@ -11,15 +11,16 @@ void UserController::add_user( const char cur_username[],
 				               const char mail_addr[],
 				               int privilege ) {
     BTree<std::pair<int,int>, User> btree;
-    // FAILURE if cur_username doesn't exist or if username exists
-    if (!btree.exist(Hash().hash(cur_username), btree_file)) {printf("-1\n"); return;}
-    if ( btree.exist(Hash().hash(    username), btree_file)) {printf("-1\n"); return;}
+    // FAILURE if username exists
+    if ( btree.exist(Hash().hash(username), btree_file)) {printf("-1\n"); return;}
 
     if (this->user_cnt == 0) {
         User todo_user(username, password, name, mail_addr, 10, user_cnt, 0, 0);
         btree.insert(Hash().hash(username), todo_user, btree_file, info_file);
     }
     else {
+        // FAILURE if cur_username doesn't exist
+        if (!btree.exist(Hash().hash(cur_username), btree_file)) {printf("-1\n"); return;}
         User cur_user = btree.query(Hash().hash(cur_username), btree_file, info_file);
         if (cur_user.is_login && (cur_user.privilege > privilege)) {
             User todo_user(username, password, name, mail_addr, privilege, user_cnt, 0, 0);
@@ -32,7 +33,6 @@ void UserController::add_user( const char cur_username[],
     }
     user_cnt++;
     printf("0\n");
-    return;
 }
 
 void UserController::login( const char username[],
@@ -101,12 +101,12 @@ void UserController::modify_profile( const char cur_username[],
 
     if (!cur_user.is_login) {printf("-1\n"); return;}
     if ((strcmp(cur_username, username) == 0) || (cur_user.privilege > todo_user.privilege)) {
-        strcpy(todo_user.username, username);
         // WARNING: not quite sure with the following 4 lines...担心strcpy会不会溢出
         if (strcmp(password, "") != 0) strcpy(todo_user.password, password);
         if (strcmp(name, "") != 0) strcpy(todo_user.name, name);
         if (strcmp(mail_addr, "") != 0) strcpy(todo_user.mail_addr, mail_addr);
         if (privilege != -1) todo_user.privilege = privilege;
+        btree.insert(Hash().hash(username), todo_user, btree_file, info_file);
     }
     else {printf("-1\n");}
 }
@@ -123,11 +123,21 @@ void UserController::load( Interface *ifs ) {
     interface = ifs;
     btree_file.open("user_btree");
     info_file.open("user_info");
+    FileOperator fop;
+    std::fstream cnt_file;
+    cnt_file.open("counts");
+    fop.read(cnt_file, 0, &user_cnt, 1);
+    cnt_file.close();
 }
 
 void UserController::save() {
     btree_file.close();
     info_file.close();
+    FileOperator fop;
+    std::fstream cnt_file;
+    cnt_file.open("counts");
+    fop.write(cnt_file, 0, &user_cnt, 1);
+    cnt_file.close();
 }
 
 void UserController::modify_order( const char username[], int order_id, Order order ) {
@@ -163,8 +173,25 @@ void UserController::print_order( const char username[] ) {
     printf("%d\n", cnt);
     for (int i = 0; i < cnt; ++i) {
         Order todo_order = value->second;
+        
+        // calc leaving_time and arriving_time
         Time leaving_time, arriving_time;
-        // [<STATUS>] <trainID> <FROM> <LEAVING_TIME> -> <TO> <ARRIVING_TIME> <PRICE> <NUM>
+        BTree<std::pair<int, int>, Train> train_btree;
+        Train todo_train = train_btree.query(Hash().hash(todo_order.train_id), interface->train_controller_released.btree_file, interface->train_controller_released.info_file);
+        int j = 0;
+        for (; j < todo_train.station_num; ++j) {
+            if (strcmp(todo_train.stations[j], todo_order.from) == 0) break;
+            leaving_time = leaving_time + todo_train.travel_times[j];
+            leaving_time = leaving_time + todo_train.stopover_times[j];
+        }
+        arriving_time = leaving_time + todo_train.travel_times[j];
+        for (; j < todo_train.station_num; ++j) {
+            if (strcmp(todo_train.stations[j+1], todo_order.to) == 0) break;
+            arriving_time = arriving_time + todo_train.travel_times[j+1];
+            arriving_time = arriving_time + todo_train.stopover_times[j];
+        }
+
+        // print: [<STATUS>] <trainID> <FROM> <LEAVING_TIME> -> <TO> <ARRIVING_TIME> <PRICE> <NUM>
         switch (todo_order.status) {
             case STATUS_SUCCESS:
                 printf("[SUCCESS]");
@@ -177,9 +204,9 @@ void UserController::print_order( const char username[] ) {
                 break;
         }
         printf(" %s %s ", todo_order.train_id, todo_order.from);
-        std::cout << leaving_time;
+        std::cout << leaving_time.date << ' ' << leaving_time;
         printf(" -> %s ", todo_order.to);
-        std::cout << arriving_time << ' ' << todo_order.price << ' ' << todo_order.num << std::endl;
+        std::cout << arriving_time.date << ' '  << arriving_time << ' ' << todo_order.price << ' ' << todo_order.num << std::endl;
     }
     delete [] value;
 }
@@ -189,4 +216,5 @@ void UserController::add_order( const char username[], Order order ) {
     BTree<std::pair<std::pair<int, int>, int>, Order> order_btree;
     std::pair<std::pair<int, int>, int> temp(Hash().hash(username), order.order_id);
     order_btree.insert(temp, order, interface->order_controller.btree_file, interface->order_controller.info_file);
+    interface->order_controller.order_cnt++;
 }

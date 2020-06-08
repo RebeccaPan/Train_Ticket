@@ -29,7 +29,8 @@ public:
 	void delete_train( const char train_id[] );
 	
 	void load( Interface *ifs, const char *id_filename, const char *info_filename );
-	void save(); // updated
+	// pos == 8(unreleased train) or 12(released train)
+	void save( int pos );
 };
 
 #endif // TRAIN_CONTROLLER_HPP

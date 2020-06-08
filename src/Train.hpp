@@ -17,7 +17,7 @@ public:
 	int stopover_times[STATION_NUM_MAX];
 	Date sale_date_begin, sale_date_end;
 	char type;
-	bool deleted;
+	// bool deleted;
 	int create_time;
 
 	Train(const char _train_id[],
@@ -31,7 +31,7 @@ public:
 		  Date _sale_date_begin,
 		  Date _sale_date_end,
 		  char _type,
-		  bool _deleted,
+		//   bool _deleted,
 		  int _create_time);
 	// Train(const Train &other);
 	~Train();

@@ -15,10 +15,10 @@ Order::Order(const char _username[],
           price(_price),
           num(_num),
           buy_time(_buy_time) {
-    strcmp(username, _username);
-    strcmp(train_id, _train_id);
-    strcmp(from, _from);
-    strcmp(to, _to);
+    strcpy(username, _username);
+    strcpy(train_id, _train_id);
+    strcpy(from, _from);
+    strcpy(to, _to);
     sale_date = _sale_date; // WARNING: no operator= for class Date
 }
 
