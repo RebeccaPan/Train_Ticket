@@ -13,17 +13,17 @@ void UserController::add_user( const char cur_username[],
     BTree<std::pair<int,int>, User> btree;
     // FAILURE if username exists
     if ( btree.exist(Hash().hash(username), btree_file)) {printf("-1\n"); return;}
-
+	
     if (this->user_cnt == 0) {
-        User todo_user(username, password, name, mail_addr, 10, user_cnt, 0, 0);
+        User todo_user(username, password, name, mail_addr, 10, ++user_cnt, 0, 0);
         btree.insert(Hash().hash(username), todo_user, btree_file, info_file);
     }
     else {
         // FAILURE if cur_username doesn't exist
         if (!btree.exist(Hash().hash(cur_username), btree_file)) {printf("-1\n"); return;}
         User cur_user = btree.query(Hash().hash(cur_username), btree_file, info_file);
-        if (cur_user.is_login && (cur_user.privilege > privilege)) {
-            User todo_user(username, password, name, mail_addr, privilege, user_cnt, 0, 0);
+        if (is_online[cur_user.create_time] && (cur_user.privilege > privilege)) {
+            User todo_user(username, password, name, mail_addr, privilege, ++user_cnt, 0, 0);
             btree.insert(Hash().hash(username), todo_user, btree_file, info_file);
         }
         else {
@@ -31,7 +31,6 @@ void UserController::add_user( const char cur_username[],
             return;
         }
     }
-    user_cnt++;
     printf("0\n");
 }
 
@@ -42,9 +41,8 @@ void UserController::login( const char username[],
     if (!btree.exist(Hash().hash(username), btree_file)) {printf("-1\n"); return;}
     User todo_user = btree.query(Hash().hash(username), btree_file, info_file);
 
-    if (strcmp(todo_user.password, password) == 0 && todo_user.is_login == 0) {
-        todo_user.is_login = 1;
-        btree.insert(Hash().hash(username), todo_user, btree_file, info_file);
+    if (strcmp(todo_user.password, password) == 0 && is_online[todo_user.create_time] == false) {
+        is_online[todo_user.create_time] = true;
         printf("0\n");
     }
     else {
@@ -54,14 +52,13 @@ void UserController::login( const char username[],
 }
 
 void UserController::logout( const char username[] ) {
-    BTree<std::pair<int,int>, User> btree;
+	 BTree<std::pair<int,int>, User> btree;
     // FAILURE if username doesn't exist
     if (!btree.exist(Hash().hash(username), btree_file)) {printf("-1\n"); return;}
     User todo_user = btree.query(Hash().hash(username), btree_file, info_file);
 
-    if (todo_user.is_login == 1) {
-        todo_user.is_login = 0;
-        btree.insert(Hash().hash(username), todo_user, btree_file, info_file);
+    if (is_online[todo_user.create_time] == true) {
+		is_online[todo_user.create_time] = false;
         printf("0\n");
     }
     else {
@@ -79,7 +76,7 @@ void UserController::query_profile( const char cur_username[],
     User cur_user  = btree.query(Hash().hash(cur_username), btree_file, info_file);
     User todo_user = btree.query(Hash().hash(username), btree_file, info_file);
 
-    if (!cur_user.is_login) {printf("-1\n"); return;}
+    if (!is_online[cur_user.create_time]) {printf("-1\n"); return;}
     if ((strcmp(cur_username, username) == 0) || (cur_user.privilege > todo_user.privilege)) {
         print_profile(username);
     }
@@ -99,14 +96,15 @@ void UserController::modify_profile( const char cur_username[],
     User cur_user  = btree.query(Hash().hash(cur_username), btree_file, info_file);
     User todo_user = btree.query(Hash().hash(username), btree_file, info_file);
 
-    if (!cur_user.is_login) {printf("-1\n"); return;}
-    if ((strcmp(cur_username, username) == 0) || (cur_user.privilege > todo_user.privilege)) {
+    if (!is_online[cur_user.create_time]) {printf("-1\n"); return;}
+    if (((strcmp(cur_username, username) == 0) || (cur_user.privilege > todo_user.privilege)) && privilege < cur_user.privilege) {
         // WARNING: not quite sure with the following 4 lines...担心strcpy会不会溢出
         if (strcmp(password, "") != 0) strcpy(todo_user.password, password);
         if (strcmp(name, "") != 0) strcpy(todo_user.name, name);
         if (strcmp(mail_addr, "") != 0) strcpy(todo_user.mail_addr, mail_addr);
         if (privilege != -1) todo_user.privilege = privilege;
         btree.insert(Hash().hash(username), todo_user, btree_file, info_file);
+		printf("%s %s %s %d\n", username, todo_user.name, todo_user.mail_addr, todo_user.privilege);
     }
     else {printf("-1\n");}
 }
@@ -115,11 +113,13 @@ void UserController::query_order( const char username[] ) {
     BTree<std::pair<int,int>, User> btree;
     // FAILURE if username doesn't exist
     if (!btree.exist(Hash().hash(username), btree_file)) {printf("-1\n"); return;}
-    
-    print_order(username);
+    User todo_user = btree.query(Hash().hash(username), btree_file, info_file);
+	if(!is_online[todo_user.create_time]) {printf("-1\n"); return;}
+	print_order(username);
 }
 
 void UserController::load( Interface *ifs ) {
+	memset(is_online, 0, sizeof(is_online));
     interface = ifs;
     btree_file.open("user_btree");
     info_file.open("user_info");
@@ -131,6 +131,7 @@ void UserController::load( Interface *ifs ) {
 }
 
 void UserController::save() {
+	//memset(is_online, 0, sizeof(is_online));
     btree_file.close();
     info_file.close();
     FileOperator fop;
@@ -172,35 +173,37 @@ void UserController::print_order( const char username[] ) {
     int cnt = order_btree.query_list(tem_l, tem_r, interface->order_controller.btree_file, interface->order_controller.info_file, value);
     printf("%d\n", cnt);
     for (int i = 0; i < cnt; ++i) {
-        Order todo_order = value->second;
+        Order todo_order = value[cnt - i - 1].second;
         
         // calc leaving_time and arriving_time
         Time leaving_time, arriving_time;
         BTree<std::pair<int, int>, Train> train_btree;
         Train todo_train = train_btree.query(Hash().hash(todo_order.train_id), interface->train_controller_released.btree_file, interface->train_controller_released.info_file);
         int j = 0;
+		leaving_time = todo_train.start_time;
+		leaving_time.date = todo_order.sale_date;
         for (; j < todo_train.station_num; ++j) {
             if (strcmp(todo_train.stations[j], todo_order.from) == 0) break;
             leaving_time = leaving_time + todo_train.travel_times[j];
             leaving_time = leaving_time + todo_train.stopover_times[j];
         }
         arriving_time = leaving_time + todo_train.travel_times[j];
-        for (; j < todo_train.station_num; ++j) {
-            if (strcmp(todo_train.stations[j+1], todo_order.to) == 0) break;
-            arriving_time = arriving_time + todo_train.travel_times[j+1];
-            arriving_time = arriving_time + todo_train.stopover_times[j];
+        for (++j; j < todo_train.station_num; ++j) {//
+            if (strcmp(todo_train.stations[j], todo_order.to) == 0) break;
+            arriving_time = arriving_time + todo_train.stopover_times[j - 1];
+            arriving_time = arriving_time + todo_train.travel_times[j];
         }
 
         // print: [<STATUS>] <trainID> <FROM> <LEAVING_TIME> -> <TO> <ARRIVING_TIME> <PRICE> <NUM>
         switch (todo_order.status) {
             case STATUS_SUCCESS:
-                printf("[SUCCESS]");
+                printf("[success]");
                 break;
             case STATUS_PENDING:
-                printf("[PENDING]");
+                printf("[pending]");
                 break;
             case STATUS_REFUNDED:
-                printf("[REFUNDED]");
+                printf("[refunded]");
                 break;
         }
         printf(" %s %s ", todo_order.train_id, todo_order.from);
@@ -208,7 +211,7 @@ void UserController::print_order( const char username[] ) {
         printf(" -> %s ", todo_order.to);
         std::cout << arriving_time.date << ' '  << arriving_time << ' ' << todo_order.price << ' ' << todo_order.num << std::endl;
     }
-    delete [] value;
+    if(cnt) delete [] value;
 }
 
 void UserController::add_order( const char username[], Order order ) {

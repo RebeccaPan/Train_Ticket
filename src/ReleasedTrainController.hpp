@@ -4,6 +4,7 @@
 #include <fstream>
 #include "const_variable.hpp"
 #include "Date.hpp"
+#include "Train.hpp"
 
 class Interface;
 
@@ -13,11 +14,14 @@ class ReleasedTrainController {
 
 	struct Char{
 		char str[USERNAME_LEN];
+		Char() {
+			;
+		}
 		Char(const char username[]) {
-			for (int i = 0; i < USERNAME_LEN; ++i) str[i] = username[i];
+			strcpy(str, username);
 		}
 		void copy(char username[]) const{
-			for (int i = 0; i < USERNAME_LEN; ++i) username[i] = str[i];
+			strcpy(username, str);
 		}
 	};
 
@@ -28,7 +32,7 @@ public:
 
 	void release_train( const char train_id[] );
 	void query_train( const char train_id[], Date date );
-	void modify_ticket( const char train_id[],
+	void modify_ticket( const Train &train,
 						Date date,
 						const char from[],
 						const char to[],
@@ -44,7 +48,7 @@ public:
 					   int buy_time = -1 );
 	void adjust_order( const char train_id[],
 					   Date date );
-	int query_ticket( const char train_id[],
+	int query_ticket( const Train &train,
 					  Date date,
 					  const char from[],
 					  const char to[] );

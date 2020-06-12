@@ -20,13 +20,14 @@ public:
 	Order(const char _username[],
 		  int _order_id,
 		  int _status,
-		  char _train_id[],
-		  char _from[],
-		  char _to[],
+		  const char _train_id[],
+		  const char _from[],
+		  const char _to[],
 		  Date _sale_date,
 		  long long _price,
 		  int _num,
 		  int _buy_time);
+	Order() {}
 	~Order();
 };
 

@@ -3,11 +3,12 @@
 //#include<cstdio>
 
 Time Time::operator + (const int num) const{
+	if(num == 0) return *this;
 	int NUM = num;
 	Date d = date + (NUM / TOTAL_MINUTES);
 	NUM %= TOTAL_MINUTES;
 	int h = hour, m = minute;
-	if(h * 60 + m + NUM > TOTAL_MINUTES) d = d + 1;
+	if(h * 60 + m + NUM >= TOTAL_MINUTES) d = d + 1;
 	h = (h + NUM / 60) % 24;
 	NUM = NUM % 60;
 	if(m + NUM >= 60) h = (h + 1) % 24;

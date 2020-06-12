@@ -31,4 +31,4 @@ main : BTree.cpp \
 		UserController.cpp \
 		Hash.cpp \
 		-o main -Wall -Wextra -Wconversion -Wshadow \
-		-fsanitize=undefined -fsanitize=address -std=c++11
+		-std=c++11 -O2

@@ -11,9 +11,9 @@ public:
 	char name[NAME_LEN];
 	char mail_addr[MAIL_ADDR_LEN];
 	int privilege;
-	int create_time;
+	int create_time; //
 	int order_cnt;
-	int is_login;
+	int is_login; //
 
 	User( const char _username[],
 		const char _password[],
@@ -23,6 +23,7 @@ public:
 		int _create_time,
 		int _order_cnt,
 		int _is_login );
+	User() {}
 	// User( const User &other );
 	~User();
 	// User &operator=( const User &other );

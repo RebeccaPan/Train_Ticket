@@ -12,6 +12,7 @@ public:
 	std::fstream btree_file; // updated
 	std::fstream info_file; // updated
 	Interface *interface;
+	bool is_online[100007];
 	
 	void add_user( const char cur_username[],
 				   const char username[],
@@ -22,6 +23,7 @@ public:
 	void login( const char username[],
 				const char password[] );
 	void logout( const char username[] );
+	bool is_login( const char username[] );
 	void query_profile( const char cur_username[],
 						const char username[] );
 	void modify_profile( const char cur_username[],

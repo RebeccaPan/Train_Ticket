@@ -27,6 +27,7 @@ void Date::add_month() {
 
 Date Date::operator + (const int num) const{
 	Date rs = *this;
+	if(num == 0) return rs;
 	int x = rs.cal_day() - rs.day;
 	if(num <= x) {
 		rs.day += num;
@@ -35,8 +36,8 @@ Date Date::operator + (const int num) const{
 	rs.add_month(); rs.day = 1;
 	int NUM = num - x - 1;
 	while(NUM >= rs.cal_day()) {
-		rs.add_month();
 		NUM -= rs.cal_day();
+		rs.add_month();
 	}
 	rs.day += NUM;
 	return rs;

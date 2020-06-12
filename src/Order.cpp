@@ -3,9 +3,9 @@
 Order::Order(const char _username[],
 		  int _order_id,
 		  int _status,
-		  char _train_id[],// QUESTION: should I write `const char` or `char`?
-		  char _from[],
-		  char _to[],
+		  const char _train_id[],// QUESTION: should I write `const char` or `char`?
+		  const char _from[],
+		  const char _to[],
 		  Date _sale_date,
 		  long long _price,
 		  int _num,

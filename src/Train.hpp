@@ -33,6 +33,7 @@ public:
 		  char _type,
 		//   bool _deleted,
 		  int _create_time);
+	Train() {}
 	// Train(const Train &other);
 	~Train();
 	// Train &operator=(const Train &other);

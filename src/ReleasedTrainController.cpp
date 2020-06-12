@@ -7,27 +7,24 @@
 void ReleasedTrainController::release_train( const char train_id[] ) {
 	BTree<std::pair<int, int>, Train> btree;
 	std::pair<int, int> id = Hash().hash(train_id);
+	if(!btree.exist(id, controller_unreleased.btree_file)) {
+		printf("-1\n");
+		return;
+	}
+	printf("0\n");
 	Train train = btree.query(id, controller_unreleased.btree_file, controller_unreleased.info_file);
-	controller_unreleased.delete_train(train_id);
-	controller_released.add_train(train_id, 
-								  train.station_num, 
-								  train.seat_num, 
-								  train.stations,
-								  train.prices,
-								  train.start_time,
-								  train.travel_times,
-								  train.stopover_times,
-								  train.sale_date_begin,
-								  train.sale_date_end,
-								  train.type);
+	btree.remove(id, controller_unreleased.btree_file);
+	controller_released.train_cnt++;
+	train.create_time = controller_released.train_cnt; //
+	btree.insert(id, train, controller_released.btree_file, controller_released.info_file);
 	//ticket_file
 	for (int i = 0; i < SUM * SUM; ++i) 
 		file_operator.write(ticket_file, -1, &train.seat_num, 1);
 	//station_btree (haven't done in TrainController::add_train())
-	BTree<std::pair<std::pair<int, int>, std::pair<int, int> >, int> btree_station;
-	for (int i = 0; i <= train.station_num; ++i) {
+	BTree<std::pair<std::pair<int, int>, std::pair<int, int> >, std::pair<TicketController::Char, int> > btree_station;
+	for (int i = 0; i < train.station_num; ++i) {
 		std::pair<int, int> station_id = Hash().hash(train.stations[i]);
-		btree_station.insert(std::make_pair(station_id, id), i, itf->ticket_controller.btree_file, itf->ticket_controller.info_file);
+		btree_station.insert(std::make_pair(station_id, id), std::make_pair(TicketController::Char(train_id), i), itf->ticket_controller.btree_file, itf->ticket_controller.info_file);
 	}
 }
 
@@ -35,20 +32,31 @@ void ReleasedTrainController::query_train( const char train_id[], Date date ) {
 	if(!date.exist()) {
 		printf("-1\n"); return;
 	}
+	bool fl = 0;
 	//train_id exist
 	BTree<std::pair<int, int>, Train> btree;
 	std::pair<int, int> id = Hash().hash(train_id);
-	if(!btree.exist(id, controller_released.btree_file)) {
+	Train train;
+	if(btree.exist(id, controller_released.btree_file)) {
+		train = btree.query(id, controller_released.btree_file, controller_released.info_file);
+	}
+	else if(btree.exist(id, controller_unreleased.btree_file)) {
+		train = btree.query(id, controller_unreleased.btree_file, controller_unreleased.info_file);
+		fl = 1;
+	}
+	else {
 		printf("-1\n"); return;
 	}
 	//check date
-	Train train = btree.query(id, controller_released.btree_file, controller_released.info_file);
 	if(date < train.sale_date_begin || train.sale_date_end < date) {
 		printf("-1\n"); return;
 	}
 	//read ticket_file
 	int *ticket = new int[SUM + 7];
-	file_operator.read(ticket_file, ((train.create_time - 1) * SUM * SUM + (date - train.sale_date_begin) * SUM) * sizeof(int), ticket, SUM);
+	if(fl) {
+		for (int i = 0; i < train.station_num; ++i) ticket[i] = train.seat_num;
+	}
+	else file_operator.read(ticket_file, ((train.create_time - 1) * SUM * SUM + (date - train.sale_date_begin) * SUM) * (int)sizeof(int), ticket, SUM);
 
 	printf("%s %c\n", train_id, train.type);
 	Time now = train.start_time; now.date = date;
@@ -79,19 +87,16 @@ void ReleasedTrainController::query_train( const char train_id[], Date date ) {
 	delete []ticket;
 }
 
-void ReleasedTrainController::modify_ticket( const char train_id[], Date date, const char from[], const char to[], int num ) {
-	BTree<std::pair<int, int>, Train> btree;
-	std::pair<int, int> id = Hash().hash(train_id);
-	Train train = btree.query(id, controller_released.btree_file, controller_released.info_file);
+void ReleasedTrainController::modify_ticket( const Train &train, Date date, const char from[], const char to[], int num ) {
 	int *ticket = new int[SUM + 7];
-	file_operator.read(ticket_file, ((train.create_time - 1) * SUM * SUM + (date - train.sale_date_begin) * SUM) * sizeof(int), ticket, SUM);
+	file_operator.read(ticket_file, ((train.create_time - 1) * SUM * SUM + (date - train.sale_date_begin) * SUM) * (int)sizeof(int), ticket, SUM);
 	int fl = 0;//whether between from and to
 	for (int i = 0; i < train.station_num; ++i) {
 		if(fl == 0 && strcmp(train.stations[i], from) == 0) fl = 1;
+		if(fl == 1 && strcmp(train.stations[i], to) == 0) break;
 		if(fl) ticket[i] += num;
-		if(fl == 1 && strcmp(train.stations[i], to) == 0) fl = 0;
 	}
-	file_operator.write(ticket_file, ((train.create_time - 1) * SUM * SUM + (date - train.sale_date_begin) * SUM) * sizeof(int), ticket, SUM);
+file_operator.write(ticket_file, ((train.create_time - 1) * SUM * SUM + (date - train.sale_date_begin) * SUM) * (int)sizeof(int), ticket, SUM);
 	delete []ticket;
 }
 
@@ -129,9 +134,11 @@ void ReleasedTrainController::adjust_order( const char train_id[], Date date ) {
 		userid = Hash().hash(username);
 		order_id = value[i].second.second;
 		Order order = btree_order.query(std::make_pair(userid, order_id), itf->order_controller.btree_file, itf->order_controller.info_file);
-		if(query_ticket(train_id, date, order.from, order.to) >= order.num) {
+		BTree<std::pair<int, int>, Train> train_btree;
+		Train train = train_btree.query(id, controller_released.btree_file, controller_released.info_file);
+		if(query_ticket(train, date, order.from, order.to) >= order.num) {
 			delete_order(train_id, date, username, order_id, order.buy_time);
-			modify_ticket(train_id, date, order.from, order.to, -order.num); //
+			modify_ticket(train, date, order.from, order.to, -order.num); //
 			order.status = STATUS_SUCCESS;
 			itf->user_controller.modify_order(username, order_id, order);
 		}
@@ -139,24 +146,21 @@ void ReleasedTrainController::adjust_order( const char train_id[], Date date ) {
 	if(cnt) delete []value;
 }
 
-int ReleasedTrainController::query_ticket( const char train_id[], Date date, const char from[], const char to[] ) {
-	BTree<std::pair<int, int>, Train> btree;
-	std::pair<int, int> id = Hash().hash(train_id);
-	Train train = btree.query(id, controller_released.btree_file, controller_released.info_file);
+int ReleasedTrainController::query_ticket( const Train &train, Date date, const char from[], const char to[] ) {
 	int *ticket = new int[SUM + 7];
-	file_operator.read(ticket_file, ((train.create_time - 1) * SUM * SUM + (date - train.sale_date_begin) * SUM) * sizeof(int), ticket, SUM);
+	file_operator.read(ticket_file, ((train.create_time - 1) * SUM * SUM + (date - train.sale_date_begin) * SUM) * (int)sizeof(int), ticket, SUM);
 	int fl = 0, rs = 1e8;
-	for (int i = 0; i < train.station_num; ++i) {
+	for (int i = 0; i < train.station_num && rs > 0; ++i) {
 		if(fl == 0 && strcmp(train.stations[i], from) == 0) fl = 1;
+		if(fl == 1 && strcmp(train.stations[i], to) == 0) break;
 		if(fl && ticket[i] < rs) rs = ticket[i];
-		if(fl == 1 && strcmp(train.stations[i], to) == 0) fl = 0;
 	}
 	delete []ticket;
 	return rs;
 }
 
 void ReleasedTrainController::load(Interface *interface) {
-	itf = interface;
+	itf = interface; 
 	ticket_file.open("ticket_info");
 	que_btree_file.open("que_btree");
 	que_info_file.open("que_info");

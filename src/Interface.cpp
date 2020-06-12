@@ -14,6 +14,14 @@ void Interface :: create_file() {
 	FileOperator().create_file("ticket_info");
 	FileOperator().create_file("station_btree");
 	FileOperator().create_file("station_info");
+	FileOperator().create_file("counts");
+	std::fstream counts("counts");
+	if( FileOperator().end_pos(counts) == 0 ) {
+		int tmp[4] = {0};
+		FileOperator().write( counts, 0, tmp, 4 );
+	}
+	counts.close();
+
 }
 
 void Interface :: start() {
@@ -38,8 +46,10 @@ void Interface :: run() {
 		getline(cin, cmd);
 		
 		if( cmd.substr(0, 8) == "add_user" ) {
+			//std::cerr<<"this is add_user\n";
 			add_user(cmd);
 		} else if( cmd.substr(0, 5) == "login" ) {
+			//std::cerr<<"this is login\n";
 			login(cmd);
 		} else if( cmd.substr(0, 6) == "logout" ) {
 			logout(cmd);
@@ -79,8 +89,8 @@ void Interface :: exit() {
 	user_controller.save();
 	order_controller.save();
 	released_train_controller.save();
-	train_controller_unreleased.save();
-	train_controller_released.save();
+	train_controller_unreleased.save(2 * sizeof(int));
+	train_controller_released.save(3 * sizeof(int));
 	ticket_controller.save();
 	puts("bye");
 	::exit(0);
@@ -542,8 +552,8 @@ void Interface :: clean() {
 	user_controller.save();
 	order_controller.save();
 	released_train_controller.save();
-	train_controller_unreleased.save();
-	train_controller_released.save();
+	train_controller_unreleased.save(2 * sizeof(int));
+	train_controller_released.save(3 * sizeof(int));
 	ticket_controller.save();
 	
 	FileOperator().create_new_file("user_btree");
@@ -559,6 +569,7 @@ void Interface :: clean() {
 	FileOperator().create_new_file("ticket_info");
 	FileOperator().create_new_file("station_btree");
 	FileOperator().create_new_file("station_info");
+	FileOperator().create_new_file("counts"); // initialize in start()
 	
 	start();
 }
