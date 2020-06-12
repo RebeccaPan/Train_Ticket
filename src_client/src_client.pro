@@ -20,16 +20,19 @@ SOURCES += \
     loginwidget.cpp \
     main.cpp \
     mainwidget.cpp \
+    registerfirstuser.cpp \
     widget.cpp
 
 HEADERS += \
     loginwidget.h \
     mainwidget.h \
+    registerfirstuser.h \
     widget.h
 
 FORMS += \
     loginwidget.ui \
     mainwidget.ui \
+    registerfirstuser.ui \
     widget.ui
 
 # Default rules for deployment.

@@ -4,6 +4,7 @@
 #include <QWidget>
 
 #include "mainwidget.h"
+#include "registerfirstuser.h"
 
 namespace Ui {
 class LoginWidget;
@@ -24,6 +25,7 @@ private slots:
 private:
     Ui::LoginWidget *ui;
     MainWidget *main_widget;
+    RegisterFirstUser *register_first_user_widget;
 };
 
 #endif // LOGINWIDGET_H
