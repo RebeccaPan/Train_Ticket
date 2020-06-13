@@ -7,8 +7,7 @@ namespace Ui {
 class MainWidget;
 }
 
-class MainWidget : public QWidget
-{
+class MainWidget : public QWidget {
     Q_OBJECT
 
 public:
@@ -34,6 +33,7 @@ private slots:
 
 private:
     Ui::MainWidget *ui;
+
 };
 
 #endif // MAINWIDGET_H

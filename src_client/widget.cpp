@@ -5,8 +5,7 @@ QTcpSocket *Widget::socket = nullptr;
 
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
-    , ui(new Ui::Widget)
-{
+    , ui(new Ui::Widget) {
     ui->setupUi(this);
 
     assert( socket == nullptr );
@@ -16,8 +15,7 @@ Widget::Widget(QWidget *parent)
     connect(ui->pushButton, SIGNAL(clicked()), this, SLOT(connect_server()));
 }
 
-Widget::~Widget()
-{
+Widget::~Widget() {
     delete ui;
     delete socket;
     delete login_widget;
@@ -46,7 +44,7 @@ void Widget::SendMessage( const QString &msg ) {
     SimpleMessageBox("鸽了，没送", msg); // TODO
 }
 
-QString Widget::RecvMessage() { // "over" if over
+QString Widget::RecvMessage() {
     return "Pigeoned"; // TODO
 }
 

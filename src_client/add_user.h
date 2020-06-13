@@ -4,19 +4,21 @@
 #include <QWidget>
 
 namespace Ui {
-class add_user;
+class AddUser;
 }
 
-class add_user : public QWidget
-{
+class AddUser : public QWidget {
     Q_OBJECT
 
 public:
-    explicit add_user(QWidget *parent = nullptr);
-    ~add_user();
+    explicit AddUser(QWidget *parent = nullptr);
+    ~AddUser();
+
+private slots:
+    void do_add_user();
 
 private:
-    Ui::add_user *ui;
+    Ui::AddUser *ui;
 };
 
 #endif // ADD_USER_H

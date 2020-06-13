@@ -23,8 +23,8 @@ class Ui_LoginWidget
 public:
     QLabel *label;
     QLabel *label_2;
-    QLineEdit *lineEdit;
-    QLineEdit *lineEdit_2;
+    QLineEdit *lineEdit_username;
+    QLineEdit *lineEdit_password;
     QPushButton *pushButton;
     QPushButton *pushButton_2;
 
@@ -39,15 +39,15 @@ public:
         label_2 = new QLabel(LoginWidget);
         label_2->setObjectName(QString::fromUtf8("label_2"));
         label_2->setGeometry(QRect(70, 170, 61, 20));
-        lineEdit = new QLineEdit(LoginWidget);
-        lineEdit->setObjectName(QString::fromUtf8("lineEdit"));
-        lineEdit->setGeometry(QRect(140, 140, 113, 20));
-        lineEdit_2 = new QLineEdit(LoginWidget);
-        lineEdit_2->setObjectName(QString::fromUtf8("lineEdit_2"));
-        lineEdit_2->setGeometry(QRect(140, 170, 113, 20));
+        lineEdit_username = new QLineEdit(LoginWidget);
+        lineEdit_username->setObjectName(QString::fromUtf8("lineEdit_username"));
+        lineEdit_username->setGeometry(QRect(140, 140, 113, 20));
+        lineEdit_password = new QLineEdit(LoginWidget);
+        lineEdit_password->setObjectName(QString::fromUtf8("lineEdit_password"));
+        lineEdit_password->setGeometry(QRect(140, 170, 113, 20));
         pushButton = new QPushButton(LoginWidget);
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
-        pushButton->setGeometry(QRect(59, 210, 121, 41));
+        pushButton->setGeometry(QRect(60, 210, 121, 41));
         pushButton_2 = new QPushButton(LoginWidget);
         pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
         pushButton_2->setGeometry(QRect(210, 210, 81, 41));
