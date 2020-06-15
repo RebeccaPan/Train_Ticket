@@ -16,119 +16,151 @@
   <widget class="QWidget" name="gridLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>20</y>
-     <width>371</width>
-     <height>261</height>
+     <x>0</x>
+     <y>40</y>
+     <width>394</width>
+     <height>181</height>
     </rect>
    </property>
-   <layout class="QGridLayout" name="gridLayout_2">
-    <item row="1" column="1">
-     <widget class="QPushButton" name="add_train_button">
-      <property name="text">
-       <string>add_train</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="2">
-     <widget class="QPushButton" name="query_profile_button">
-      <property name="text">
-       <string>query_profile</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="1">
-     <widget class="QPushButton" name="delete_train_button">
-      <property name="text">
-       <string>delete_train</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="0">
-     <widget class="QPushButton" name="add_user_button">
-      <property name="text">
-       <string>add_user</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="2">
-     <widget class="QPushButton" name="query_ticket_button">
-      <property name="text">
-       <string>query_ticket</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="0">
-     <widget class="QPushButton" name="query_transfer_button">
-      <property name="text">
-       <string>query_transfer</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="1">
-     <widget class="QPushButton" name="buy_ticket_button">
-      <property name="text">
-       <string>buy_ticket</string>
-      </property>
-     </widget>
-    </item>
+   <layout class="QGridLayout" name="gridLayout">
     <item row="1" column="0">
-     <widget class="QPushButton" name="modify_profile_button">
+     <widget class="QLabel" name="label">
       <property name="text">
-       <string>modify_profile</string>
+       <string> User Operation↓</string>
       </property>
      </widget>
     </item>
-    <item row="1" column="2">
+    <item row="3" column="2">
      <widget class="QPushButton" name="release_train_button">
       <property name="text">
        <string>release_train</string>
       </property>
      </widget>
     </item>
-    <item row="0" column="1">
-     <widget class="QPushButton" name="logout_button">
+    <item row="3" column="0">
+     <widget class="QPushButton" name="query_profile_button">
       <property name="text">
-       <string>logout</string>
+       <string>query_profile</string>
       </property>
      </widget>
     </item>
-    <item row="2" column="0">
+    <item row="1" column="2">
+     <widget class="QLabel" name="label_3">
+      <property name="text">
+       <string> Train Operation↓</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="2">
      <widget class="QPushButton" name="query_train_button">
       <property name="text">
        <string>query_train</string>
       </property>
      </widget>
     </item>
-    <item row="3" column="2">
-     <widget class="QPushButton" name="query_order_button">
+    <item row="2" column="0">
+     <widget class="QPushButton" name="add_user_button">
       <property name="text">
-       <string>query_order</string>
+       <string>add_user</string>
       </property>
      </widget>
     </item>
     <item row="4" column="0">
+     <widget class="QPushButton" name="modify_profile_button">
+      <property name="text">
+       <string>modify_profile</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="2">
+     <widget class="QPushButton" name="add_train_button">
+      <property name="text">
+       <string>add_train</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>   Ticket Operation↓</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="2">
+     <widget class="QPushButton" name="delete_train_button">
+      <property name="text">
+       <string>delete_train</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="1">
      <widget class="QPushButton" name="refund_ticket_button">
       <property name="text">
        <string>refund_ticket</string>
       </property>
      </widget>
     </item>
-    <item row="4" column="1">
+    <item row="6" column="0">
+     <widget class="QPushButton" name="query_order_button">
+      <property name="text">
+       <string>query_order</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1" rowspan="3">
+     <widget class="QPushButton" name="ticket_button">
+      <property name="text">
+       <string>NAME SET IN mainwidget.cpp</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="horizontalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>240</y>
+     <width>239</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
      <widget class="QPushButton" name="clean_button">
       <property name="text">
        <string>clean</string>
       </property>
      </widget>
     </item>
-    <item row="4" column="2">
+    <item>
      <widget class="QPushButton" name="exit_button">
       <property name="text">
        <string>exit</string>
       </property>
      </widget>
     </item>
+    <item>
+     <widget class="QPushButton" name="logout_button">
+      <property name="text">
+       <string>logout</string>
+      </property>
+     </widget>
+    </item>
    </layout>
+  </widget>
+  <widget class="QLabel" name="label_Welcome">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>10</y>
+     <width>261</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>TextLabelLongLongLongLongLongLongLongEnough</string>
+   </property>
   </widget>
  </widget>
  <resources/>

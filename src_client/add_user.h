@@ -19,6 +19,9 @@ private slots:
 
 private:
     Ui::AddUser *ui;
+
+public:
+    QString cur_username;
 };
 
 #endif // ADD_USER_H

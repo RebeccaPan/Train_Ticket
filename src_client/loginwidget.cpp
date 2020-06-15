@@ -41,6 +41,7 @@ void LoginWidget::login() {
     }
 
     hide();
-    main_widget->show();
     main_widget->cur_username = ui->lineEdit_username->text();
+    main_widget->init();
+    main_widget->show();
 }

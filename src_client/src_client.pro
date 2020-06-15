@@ -18,25 +18,34 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    add_train.cpp \
     add_user.cpp \
     loginwidget.cpp \
     main.cpp \
     mainwidget.cpp \
+    modify_profile.cpp \
     registerfirstuser.cpp \
+    ticket_operation.cpp \
     widget.cpp
 
 HEADERS += \
+    add_train.h \
     add_user.h \
     loginwidget.h \
     mainwidget.h \
+    modify_profile.h \
     registerfirstuser.h \
+    ticket_operation.h \
     widget.h
 
 FORMS += \
+    add_train.ui \
     add_user.ui \
     loginwidget.ui \
     mainwidget.ui \
+    modify_profile.ui \
     registerfirstuser.ui \
+    ticket_operation.ui \
     widget.ui
 
 # Default rules for deployment.

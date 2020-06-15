@@ -1,23 +1,23 @@
-#include "add_user.h"
-#include "ui_add_user.h"
+#include "modify_user.h"
+#include "ui_modify_user.h"
 #include "widget.h"
 
-AddUser::AddUser(QWidget *parent) :
+ModifyUser::ModifyUser(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::AddUser) {
+    ui(new Ui::ModifyUser) {
     ui->setupUi(this);
 
-    connect(ui->do_add_user, SIGNAL(clicked()), this, SLOT(do_add_user()));
+    connect(ui->do_modify_profile, SIGNAL(clicked()), this, SLOT(do_modify_profile()));
 }
 
-void AddUser::do_add_user() {
+void ModifyUser::do_modify_profile() {
     if(ui->lineEdit_1_u->text() == "") {Widget::SimpleMessageBox("", "请填写username"); return;}
     if(ui->lineEdit_2_p->text() == "") {Widget::SimpleMessageBox("", "请填写password"); return;}
     if(ui->lineEdit_3_n->text() == "") {Widget::SimpleMessageBox("", "请填写name"); return;}
     if(ui->lineEdit_4_m->text() == "") {Widget::SimpleMessageBox("", "请填写mailAddr"); return;}
     if(ui->lineEdit_5_g->text() == "") {Widget::SimpleMessageBox("", "请填写privilege"); return;}
 
-    QString addUserCmd = "add_user -c " + cur_username;
+    QString addUserCmd = "add_user -c NULL";
     addUserCmd += " -u " + ui->lineEdit_1_u->text();
     addUserCmd += " -p " + ui->lineEdit_2_p->text();
     addUserCmd += " -n " + ui->lineEdit_3_n->text();
@@ -30,12 +30,12 @@ void AddUser::do_add_user() {
         Widget::SimpleMessageBox("鸽了，没收", "还没收到信息呢，也不知道成功了没有");
     }
     else {
-        if (addUserRecv == "0\n") Widget::SimpleMessageBox("写好了", "添加用户成功");
-        else Widget::SimpleMessageBox("写好了", "添加用户失败");
+        if (addUserRecv == "0\n") Widget::SimpleMessageBox("实际上还没写呢", "添加用户成功");
+        else Widget::SimpleMessageBox("实际上还没写呢", "添加用户失败");
     }
     hide();
 }
 
-AddUser::~AddUser() {
+ModifyUser::~ModifyUser() {
     delete ui;
 }
