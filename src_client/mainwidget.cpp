@@ -4,10 +4,10 @@
 
 MainWidget::MainWidget(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::MainWidget)
-{
+    ui(new Ui::MainWidget) {
     ui->setupUi(this);
 
+    add_user_widget = new AddUser();
     connect(ui->exit_button, SIGNAL(clicked()), this, SLOT(exit()));
     connect(ui->clean_button, SIGNAL(clicked()), this, SLOT(clean()));
     connect(ui->logout_button, SIGNAL(clicked()), this, SLOT(logout()));
@@ -26,19 +26,36 @@ MainWidget::MainWidget(QWidget *parent) :
 }
 
 void MainWidget::exit() {
-    Widget::PigeonBox(); // TODO
+    Widget::SendMessage("exit");
+    QString logoutRecv = Widget::RecvMessage();
+    Widget::SimpleMessageBox("写好了", "退出程序成功");
 }
 
 void MainWidget::clean() {
-    Widget::PigeonBox(); // TODO
+    Widget::SendMessage("clean");
+    QString logoutRecv = Widget::RecvMessage();
+    Widget::SimpleMessageBox("写好了", "清除成功");
 }
 
 void MainWidget::logout() {
-    Widget::PigeonBox(); // TODO
+    QString logoutCmd = "logout";
+    logoutCmd += " -u " + cur_username;
+    Widget::SendMessage(logoutCmd);
+    QString logoutRecv = Widget::RecvMessage();
+    if (logoutRecv == "Pigeoned") {
+        Widget::SimpleMessageBox("鸽了，没收", "还没收到信息呢，也不知道成功了没有");
+    }
+    else {
+        if (logoutRecv == "0\n") Widget::SimpleMessageBox("写好了", "登出成功");
+        else Widget::SimpleMessageBox("写好了", "登出失败");
+    }
+    hide();
+    Widget::SimpleMessageBox("写好了", "直接关闭程序");
+    exit();
 }
 
 void MainWidget::add_user() {
-    Widget::PigeonBox(); // TODO
+    add_user_widget->show();
 }
 
 void MainWidget::add_train() {
@@ -66,7 +83,17 @@ void MainWidget::query_ticket() {
 }
 
 void MainWidget::query_profile() {
-    Widget::PigeonBox(); // TODO
+    QString cmd = "query_profile";
+    cmd += " -u " + cur_username;
+    Widget::SendMessage(cmd);
+    QString recv = Widget::RecvMessage();
+    if (recv == "Pigeoned") {
+        Widget::SimpleMessageBox("鸽了，没收", "还没收到信息呢，也不知道成功了没有");
+    }
+    else {
+        if (recv == "-1\n") Widget::SimpleMessageBox("写好了", "查询个人信息失败");
+        else Widget::SimpleMessageBox("写好了", recv);
+    }
 }
 
 void MainWidget::refund_ticket() {
@@ -89,4 +116,5 @@ void MainWidget::query_transfer() {
 MainWidget::~MainWidget()
 {
     delete ui;
+    delete add_user_widget;
 }

@@ -1,5 +1,6 @@
 #include "widget.h"
 #include "ui_widget.h"
+#include <QtTest>
 
 QTcpSocket *Widget::socket = nullptr;
 
@@ -22,11 +23,15 @@ Widget::~Widget() {
 }
 
 void Widget::connect_server() {
-    PigeonBox(); // TODO
-
-    SimpleMessageBox("实际上还没写呢", "连接成功");
-    hide();
     login_widget->show();
+    /*socket->connectToHost(ui->lineEdit->text(), 11031);
+    if( socket->waitForConnected(5000) ) {
+        SimpleMessageBox("砬对话框", "连接成功");
+        hide();
+        login_widget->show();
+    } else {
+        SimpleMessageBox("针难人对话框", "你在开玩笑");
+    }*/
 }
 
 void Widget::SimpleMessageBox( const QString &title, const QString &text ) {
@@ -41,10 +46,39 @@ void Widget::PigeonBox() {
 }
 
 void Widget::SendMessage( const QString &msg ) {
-    SimpleMessageBox("鸽了，没送", msg); // TODO
+    Widget::SimpleMessageBox("", "SendMessage: " + msg);
+    /*if( socket->state() == QAbstractSocket::ConnectedState ) {
+        socket->write(msg.toLatin1());
+        socket->flush();
+        Widget::SimpleMessageBox("砬对话框", "送出去了");
+    } else {
+        Widget::SimpleMessageBox("针难人对话框", "服务器鸽了，关闭程序");
+        exit(0);
+    }*/
 }
 
-QString Widget::RecvMessage() {
-    return "Pigeoned"; // TODO
+QString Widget::RecvMessage() { // "over" if over
+    Widget::SimpleMessageBox("", "RecvMessage");
+    return "Pigeoned";
+    /*if( socket->state() == QAbstractSocket::ConnectedState ) {
+        QByteArray buffer;
+        while(1) {
+            buffer = socket->readAll();
+            if( buffer.isEmpty() == false ) break;
+            QTest::qWait(1000);
+        }
+        QString ans = buffer;
+        while(1) {
+            buffer = socket->readAll();
+            if( buffer.isEmpty() ) break;
+            ans += buffer;
+            QTest::qWait(1000);
+        }
+        return ans;
+    } else {
+        Widget::SimpleMessageBox("针难人对话框", "服务器鸽了，关闭程序");
+        exit(0);
+        return QString();
+    }*/
 }
 

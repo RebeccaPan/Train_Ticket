@@ -572,6 +572,7 @@ void Interface :: clean() {
 	FileOperator().create_new_file("counts"); // initialize in start()
 	
 	start();
+	puts("0");
 }
 
 int Interface :: split( std::string str, char ch, std::string *&ans ) {

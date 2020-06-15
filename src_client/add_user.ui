@@ -26,52 +26,52 @@
     <item row="1" column="0">
      <widget class="QLabel" name="label_2_p">
       <property name="text">
-       <string>TextLabel</string>
+       <string>password</string>
       </property>
      </widget>
-    </item>
-    <item row="2" column="1">
-     <widget class="QLineEdit" name="lineEdit_3_n"/>
     </item>
     <item row="0" column="1">
      <widget class="QLineEdit" name="lineEdit_1_u"/>
     </item>
-    <item row="4" column="0">
-     <widget class="QLabel" name="label_5_g">
-      <property name="text">
-       <string>TextLabel</string>
-      </property>
-     </widget>
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="lineEdit_2_p"/>
+    </item>
+    <item row="2" column="1">
+     <widget class="QLineEdit" name="lineEdit_3_n"/>
+    </item>
+    <item row="3" column="1">
+     <widget class="QLineEdit" name="lineEdit_4_m"/>
     </item>
     <item row="4" column="1">
      <widget class="QLineEdit" name="lineEdit_5_g"/>
     </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="label_5_g">
+      <property name="text">
+       <string>privilege</string>
+      </property>
+     </widget>
+    </item>
     <item row="3" column="0">
      <widget class="QLabel" name="label_4_m">
       <property name="text">
-       <string>TextLabel</string>
+       <string>mailAddr</string>
       </property>
      </widget>
     </item>
     <item row="0" column="0">
      <widget class="QLabel" name="label_1_u">
       <property name="text">
-       <string>TextLabel</string>
+       <string>username</string>
       </property>
      </widget>
     </item>
     <item row="2" column="0">
      <widget class="QLabel" name="label_3_n">
       <property name="text">
-       <string>TextLabel</string>
+       <string>name</string>
       </property>
      </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QLineEdit" name="lineEdit_2_p"/>
-    </item>
-    <item row="3" column="1">
-     <widget class="QLineEdit" name="lineEdit_4_m"/>
     </item>
    </layout>
   </widget>
@@ -85,7 +85,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>PushButton</string>
+    <string>Submit</string>
    </property>
   </widget>
  </widget>

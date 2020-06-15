@@ -2,7 +2,10 @@
 #define USER_CONTROLLER_HPP
 
 #include <fstream>
+#include <iostream>
 #include "Order.hpp"
+#include "User.hpp"
+#include "BTree.hpp"
 
 class Interface;
 
@@ -12,6 +15,7 @@ public:
 	std::fstream btree_file; // updated
 	std::fstream info_file; // updated
 	Interface *interface;
+	BTree<std::pair<int, int>, User> btree;
 	bool is_online[100007];
 	
 	void add_user( const char cur_username[],

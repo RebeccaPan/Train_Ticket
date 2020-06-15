@@ -2,6 +2,7 @@
 #define MAINWIDGET_H
 
 #include <QWidget>
+#include "add_user.h"
 
 namespace Ui {
 class MainWidget;
@@ -33,7 +34,10 @@ private slots:
 
 private:
     Ui::MainWidget *ui;
+    AddUser *add_user_widget;
 
+public:
+    QString cur_username;
 };
 
 #endif // MAINWIDGET_H

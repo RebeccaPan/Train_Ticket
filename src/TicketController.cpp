@@ -4,7 +4,6 @@ int TicketController::query_pass( const char station[], std::pair<Char, int> *&r
 	std::pair<int, int> id = Hash().hash(station);
 	std::pair<std::pair<int, int>, std::pair<int, int> > l = std::make_pair(id, std::make_pair(0, 0));
 	std::pair<std::pair<int, int>, std::pair<int, int> > r = std::make_pair(id, std::make_pair(2e9, 2e9));
-	BTree<std::pair<std::pair<int, int>, std::pair<int, int> >, std::pair<Char, int> > btree;
 	std::pair<std::pair<std::pair<int, int>, std::pair<int, int> >, std::pair<Char, int> > *value;
 	int cnt = btree.query_list(l, r, btree_file, info_file, value);
 	if(cnt) result = new std::pair<Char, int>[cnt];
@@ -49,7 +48,6 @@ void TicketController::query_ticket(const char from[], const char to[], Date dat
 	}
 	sort(from_result, from_result + A);
 	sort(to_result, to_result + B);
-	BTree<std::pair<int, int>, Train> train_btree;
 	char train_id[TRAIN_ID_LEN];
 	//calc cnt
 	int pos1 = 0, pos2 = 0, cnt = 0;
@@ -60,7 +58,7 @@ void TicketController::query_ticket(const char from[], const char to[], Date dat
 				++pos1; ++pos2; continue;
 			}
 			//printf("pos1 = %d, A = %d, train_id: %s\n", pos1, A, train_id); /////////////////////
-			Train train = train_btree.query(Hash().hash(train_id), itf->train_controller_released.btree_file, itf->train_controller_released.info_file);
+			Train train = itf->train_controller_released.btree.query(Hash().hash(train_id), itf->train_controller_released.btree_file, itf->train_controller_released.info_file);
 			Time leaving_time, arriving_time; 
 			get_all(train, from, to, leaving_time, arriving_time);
 			//check between sale_date_begin and sale_date_end 
@@ -93,7 +91,7 @@ void TicketController::query_ticket(const char from[], const char to[], Date dat
 				++pos1; ++pos2; continue;
 			}
 			//printf("%d, train_id: %s\n", pos1, train_id); /////////////////////
-			Train train = train_btree.query(Hash().hash(train_id), itf->train_controller_released.btree_file, itf->train_controller_released.info_file);
+			Train train = itf->train_controller_released.btree.query(Hash().hash(train_id), itf->train_controller_released.btree_file, itf->train_controller_released.info_file);
 			int price, ticket;
 			Time leaving_time, arriving_time; 
 			price = get_all(train, from, to, leaving_time, arriving_time);
@@ -154,7 +152,6 @@ void TicketController::query_transfer(const char from[], const char to[], Date d
 		return;
 	}
 	
-	BTree<std::pair<int, int>, Train> train_btree;
 	char train_id_a[TRAIN_ID_LEN], train_id_b[TRAIN_ID_LEN];
 	
 	char ans_id_a[TRAIN_ID_LEN], ans_id_b[TRAIN_ID_LEN], ans_station[STATION_LEN];
@@ -163,7 +160,7 @@ void TicketController::query_transfer(const char from[], const char to[], Date d
 
 	for (int i = 0; i < A; ++i) {
 		from_result[i].first.copy(train_id_a);
-		Train train_a = train_btree.query(Hash().hash(train_id_a), itf->train_controller_released.btree_file, itf->train_controller_released.info_file);
+		Train train_a = itf->train_controller_released.btree.query(Hash().hash(train_id_a), itf->train_controller_released.btree_file, itf->train_controller_released.info_file);
 		if(from_result[i].second == train_a.station_num - 1) continue;
 
 		Time leaving_time, arriving_time;
@@ -185,7 +182,7 @@ void TicketController::query_transfer(const char from[], const char to[], Date d
 				if(from_result[i].first == to_result[k].first) continue;
 				if(to_result[k].second == 0) continue;
 				to_result[k].first.copy(train_id_b);
-				Train train_b = train_btree.query(Hash().hash(train_id_b), itf->train_controller_released.btree_file, itf->train_controller_released.info_file);
+				Train train_b = itf->train_controller_released.btree.query(Hash().hash(train_id_b), itf->train_controller_released.btree_file, itf->train_controller_released.info_file);
 				for (int t = 0; t < to_result[k].second; ++t) {
 					if(strcmp(train_a.stations[j], train_b.stations[t]) == 0) {
 						Time lv, _leaving_time, _arriving_time;
@@ -263,21 +260,19 @@ void TicketController::buy_ticket( const char username[], const char train_id[],
 		return;
 	}
 	
-	BTree<std::pair<int, int>, User> user_btree;
-	if(!user_btree.exist(Hash().hash(username), itf->user_controller.btree_file)) {
+	if(!itf->user_controller.btree.exist(Hash().hash(username), itf->user_controller.btree_file)) {
 		printf("-1\n"); return;
 	}
-	User user = user_btree.query(Hash().hash(username), itf->user_controller.btree_file, itf->user_controller.info_file);
+	User user = itf->user_controller.btree.query(Hash().hash(username), itf->user_controller.btree_file, itf->user_controller.info_file);
 	if(!itf->user_controller.is_online[user.create_time]) {
 		printf("-1\n"); return;
 	}
 
-	BTree<std::pair<int, int>, Train> train_btree;
-	if(!train_btree.exist(Hash().hash(train_id), itf->train_controller_released.btree_file)) {	
+	if(!itf->train_controller_released.btree.exist(Hash().hash(train_id), itf->train_controller_released.btree_file)) {	
 		printf("-1\n"); return;
 	}
 
-	Train train = train_btree.query(Hash().hash(train_id), itf->train_controller_released.btree_file, itf->train_controller_released.info_file);
+	Train train = itf->train_controller_released.btree.query(Hash().hash(train_id), itf->train_controller_released.btree_file, itf->train_controller_released.info_file);
 	//check from, to
 	int l = -1, r = -1;
 	for (int i = 0; i < train.station_num; ++i) {
@@ -305,7 +300,7 @@ void TicketController::buy_ticket( const char username[], const char train_id[],
 	// order's price : for only one ticket
 	Order order = Order(username, ++user.order_cnt, STATUS_SUCCESS, train_id, from, to, sale_date, price, num, itf->order_controller.order_cnt + 1);
 	//user has been changed, so let's insert it back
-	user_btree.insert(Hash().hash(username), user, itf->user_controller.btree_file, itf->user_controller.info_file);
+	itf->user_controller.btree.insert(Hash().hash(username), user, itf->user_controller.btree_file, itf->user_controller.info_file);
 	if(ticket < num) order.status = STATUS_PENDING;
 	itf->user_controller.add_order(username, order);
 	if(ticket < num) {
@@ -317,11 +312,10 @@ void TicketController::buy_ticket( const char username[], const char train_id[],
 }
 
 void TicketController::refund_ticket( const char username[], int order_id ) {
-	BTree<std::pair<int, int>, User> user_btree;
-	if(!user_btree.exist(Hash().hash(username), itf->user_controller.btree_file)) {
+	if(!itf->user_controller.btree.exist(Hash().hash(username), itf->user_controller.btree_file)) {
 		printf("-1\n"); return;
 	}
-	User user = user_btree.query(Hash().hash(username), itf->user_controller.btree_file, itf->user_controller.info_file);
+	User user = itf->user_controller.btree.query(Hash().hash(username), itf->user_controller.btree_file, itf->user_controller.info_file);
 	if(!itf->user_controller.is_online[user.create_time]) {
 		printf("-1\n"); return;
 	}
@@ -329,13 +323,11 @@ void TicketController::refund_ticket( const char username[], int order_id ) {
 	if(order_id > user.order_cnt) { printf("-1\n"); return; }
 	order_id = user.order_cnt - order_id + 1;
 
-	BTree<std::pair<std::pair<int, int>, int>, Order> order_btree;
-	Order order = order_btree.query(std::make_pair(Hash().hash(username), order_id), itf->order_controller.btree_file, itf->order_controller.info_file);
+	Order order = itf->order_controller.btree.query(std::make_pair(Hash().hash(username), order_id), itf->order_controller.btree_file, itf->order_controller.info_file);
 	if(order.status == STATUS_REFUNDED) { printf("-1\n"); return; }
 
 	if(order.status == STATUS_SUCCESS) {
-		BTree<std::pair<int, int>, Train> train_btree;
-		Train train = train_btree.query(Hash().hash(order.train_id), itf->train_controller_released.btree_file, itf->train_controller_released.info_file);
+		Train train = itf->train_controller_released.btree.query(Hash().hash(order.train_id), itf->train_controller_released.btree_file, itf->train_controller_released.info_file);
 		itf->released_train_controller.modify_ticket(train, order.sale_date, order.from, order.to, order.num);
 		itf->released_train_controller.adjust_order(order.train_id, order.sale_date);
 	}
@@ -344,7 +336,7 @@ void TicketController::refund_ticket( const char username[], int order_id ) {
 	}
 
 	order.status = STATUS_REFUNDED;
-	order_btree.insert(std::make_pair(Hash().hash(username), order_id), order, itf->order_controller.btree_file, itf->order_controller.info_file);
+	itf->order_controller.btree.insert(std::make_pair(Hash().hash(username), order_id), order, itf->order_controller.btree_file, itf->order_controller.info_file);
 
 	printf("0\n");
 }
@@ -356,6 +348,7 @@ void TicketController::load( Interface *interface ) {
 }
 
 void TicketController::save() {
+	btree.write_cache(btree_file, info_file);
 	btree_file.close();
 	info_file.close();
 }

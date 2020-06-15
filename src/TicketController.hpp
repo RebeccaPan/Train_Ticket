@@ -3,9 +3,11 @@
 
 #include <fstream>
 #include <string>
+#include <iostream>
 #include "const_variable.hpp"
 #include "Time.hpp"
 #include "Hash.hpp"
+#include "BTree.hpp"
 
 class Interface;
 
@@ -34,6 +36,8 @@ public:
 			return Hash().hash(str) == Hash().hash(b.str);
 		}
 	};
+
+	BTree<std::pair<std::pair<int, int>, std::pair<int, int> >, std::pair<Char,int> > btree;
 	
 	int query_pass( const char station[], std::pair<Char, int> *&result );
 	void query_ticket( const char from[],

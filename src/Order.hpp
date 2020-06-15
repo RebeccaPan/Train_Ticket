@@ -5,7 +5,7 @@
 #include "Date.hpp"
 
 class Order {
-public:
+public: 
 	char username[USERNAME_LEN];
 	int order_id;
 	int status;

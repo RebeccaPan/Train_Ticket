@@ -24,18 +24,10 @@ void LoginWidget::register_first_user() {
 }
 
 void LoginWidget::login() {
-//    Widget::PigeonBox(); // TODO
+    if(ui->lineEdit_username->text() == "") {Widget::SimpleMessageBox("", "请填写username"); return;}
+    if(ui->lineEdit_password->text() == "") {Widget::SimpleMessageBox("", "请填写password"); return;}
 
-    if(ui->lineEdit_username ->text() == "") {
-        Widget::SimpleMessageBox("", "请填写username");
-        return;
-    }
-    if(ui->lineEdit_password ->text() == "") {
-        Widget::SimpleMessageBox("", "请填写password");
-        return;
-    }
-
-    QString loginCmd = "add_user -c NULL";
+    QString loginCmd = "login";
     loginCmd += " -u " + ui->lineEdit_username->text();
     loginCmd += " -p " + ui->lineEdit_password->text();
     Widget::SendMessage(loginCmd);
@@ -44,17 +36,11 @@ void LoginWidget::login() {
         Widget::SimpleMessageBox("鸽了，没收", "还没收到信息呢，也不知道成功了没有");
     }
     else {
-        while (loginRecv != "over") {
-            if (loginRecv == "0") {
-                Widget::SimpleMessageBox("实际上还没写呢", "登陆成功");
-            }
-            else {
-                Widget::SimpleMessageBox("实际上还没写呢", "登陆失败");
-            }
-            loginRecv = Widget::RecvMessage();
-        }
+        if (loginRecv == "0\n") Widget::SimpleMessageBox("写好了", "登陆成功");
+        else Widget::SimpleMessageBox("写好了", "登陆失败");
     }
 
     hide();
     main_widget->show();
+    main_widget->cur_username = ui->lineEdit_username->text();
 }

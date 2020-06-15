@@ -10,7 +10,6 @@ void UserController::add_user( const char cur_username[],
 				               const char name[],
 				               const char mail_addr[],
 				               int privilege ) {
-    BTree<std::pair<int,int>, User> btree;
     // FAILURE if username exists
     if ( btree.exist(Hash().hash(username), btree_file)) {printf("-1\n"); return;}
 	
@@ -36,7 +35,6 @@ void UserController::add_user( const char cur_username[],
 
 void UserController::login( const char username[],
                             const char password[] ) {
-    BTree<std::pair<int,int>, User> btree;
     // FAILURE if username doesn't exist
     if (!btree.exist(Hash().hash(username), btree_file)) {printf("-1\n"); return;}
     User todo_user = btree.query(Hash().hash(username), btree_file, info_file);
@@ -52,7 +50,6 @@ void UserController::login( const char username[],
 }
 
 void UserController::logout( const char username[] ) {
-	 BTree<std::pair<int,int>, User> btree;
     // FAILURE if username doesn't exist
     if (!btree.exist(Hash().hash(username), btree_file)) {printf("-1\n"); return;}
     User todo_user = btree.query(Hash().hash(username), btree_file, info_file);
@@ -69,7 +66,6 @@ void UserController::logout( const char username[] ) {
 
 void UserController::query_profile( const char cur_username[],
                                     const char username[] ) {
-    BTree<std::pair<int,int>, User> btree;
     // FAILURE if cur_username doesn't exist or username doesn't exist
     if (!btree.exist(Hash().hash(cur_username), btree_file)) {printf("-1\n"); return;}
     if (!btree.exist(Hash().hash(    username), btree_file)) {printf("-1\n"); return;}
@@ -89,7 +85,6 @@ void UserController::modify_profile( const char cur_username[],
                                      const char name[], // empty is ""
                                      const char mail_addr[], // empty is ""
                                      int privilege ) { // empty is -1
-    BTree<std::pair<int,int>, User> btree;
     // FAILURE if cur_username doesn't exist or username doesn't exist
     if (!btree.exist(Hash().hash(cur_username), btree_file)) {printf("-1\n"); return;}
     if (!btree.exist(Hash().hash(    username), btree_file)) {printf("-1\n"); return;}
@@ -109,8 +104,7 @@ void UserController::modify_profile( const char cur_username[],
     else {printf("-1\n");}
 }
 
-void UserController::query_order( const char username[] ) {   
-    BTree<std::pair<int,int>, User> btree;
+void UserController::query_order( const char username[] ) {
     // FAILURE if username doesn't exist
     if (!btree.exist(Hash().hash(username), btree_file)) {printf("-1\n"); return;}
     User todo_user = btree.query(Hash().hash(username), btree_file, info_file);
@@ -132,6 +126,7 @@ void UserController::load( Interface *ifs ) {
 
 void UserController::save() {
 	//memset(is_online, 0, sizeof(is_online));
+	btree.write_cache(btree_file, info_file);
     btree_file.close();
     info_file.close();
     FileOperator fop;
@@ -143,21 +138,18 @@ void UserController::save() {
 
 void UserController::modify_order( const char username[], int order_id, Order order ) {
     // WARNING: no checking whether username or order exists
-    BTree<std::pair<std::pair<int, int>, int>, Order> order_btree;
     std::pair<std::pair<int, int>, int> temp(Hash().hash(username), order_id);
-    order_btree.insert(temp, order, interface->order_controller.btree_file, interface->order_controller.info_file);
+    interface->order_controller.btree.insert(temp, order, interface->order_controller.btree_file, interface->order_controller.info_file);
 }
 
 Order UserController::get_order( const char username[], int order_id ) {
     // WARNING: no checking whether username or order exists
-    BTree<std::pair<std::pair<int, int>, int>, Order> order_btree;
     std::pair<std::pair<int, int>, int> temp(Hash().hash(username), order_id);
-    return order_btree.query(temp, interface->order_controller.btree_file, interface->order_controller.info_file);
+    return interface->order_controller.btree.query(temp, interface->order_controller.btree_file, interface->order_controller.info_file);
 }
 
 void UserController::print_profile( const char username[] ) {
     // WARNING: no checking whether username exists
-    BTree<std::pair<int,int>, User> btree;
     User todo_user = btree.query(Hash().hash(username), btree_file, info_file);
     
     printf("%s %s %s %d\n", username, todo_user.name, todo_user.mail_addr, todo_user.privilege);
@@ -165,20 +157,18 @@ void UserController::print_profile( const char username[] ) {
 
 void UserController::print_order( const char username[] ) {
     // WARNING: no checking whether username or order exists
-    BTree<std::pair<std::pair<int, int>, int>, Order> order_btree;
     std::pair<std::pair<int, int>, int> tem_l(Hash().hash(username), 0);
     // WARNING: const `1e8` is the INF of order_id; it's not saved as a const
     std::pair<std::pair<int, int>, int> tem_r(Hash().hash(username), 1e8);
     std::pair<std::pair<std::pair<int, int>, int>, Order> *value;
-    int cnt = order_btree.query_list(tem_l, tem_r, interface->order_controller.btree_file, interface->order_controller.info_file, value);
+    int cnt = interface->order_controller.btree.query_list(tem_l, tem_r, interface->order_controller.btree_file, interface->order_controller.info_file, value);
     printf("%d\n", cnt);
     for (int i = 0; i < cnt; ++i) {
         Order todo_order = value[cnt - i - 1].second;
         
         // calc leaving_time and arriving_time
         Time leaving_time, arriving_time;
-        BTree<std::pair<int, int>, Train> train_btree;
-        Train todo_train = train_btree.query(Hash().hash(todo_order.train_id), interface->train_controller_released.btree_file, interface->train_controller_released.info_file);
+        Train todo_train = interface->train_controller_released.btree.query(Hash().hash(todo_order.train_id), interface->train_controller_released.btree_file, interface->train_controller_released.info_file);
         int j = 0;
 		leaving_time = todo_train.start_time;
 		leaving_time.date = todo_order.sale_date;
@@ -216,8 +206,7 @@ void UserController::print_order( const char username[] ) {
 
 void UserController::add_order( const char username[], Order order ) {
     // WARNING: no checking whether username exists
-    BTree<std::pair<std::pair<int, int>, int>, Order> order_btree;
     std::pair<std::pair<int, int>, int> temp(Hash().hash(username), order.order_id);
-    order_btree.insert(temp, order, interface->order_controller.btree_file, interface->order_controller.info_file);
+    interface->order_controller.btree.insert(temp, order, interface->order_controller.btree_file, interface->order_controller.info_file);
     interface->order_controller.order_cnt++;
 }
