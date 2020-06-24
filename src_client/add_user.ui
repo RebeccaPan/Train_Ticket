@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>添加用户 Add User</string>
   </property>
   <widget class="QWidget" name="gridLayoutWidget">
    <property name="geometry">
@@ -26,7 +26,7 @@
     <item row="1" column="0">
      <widget class="QLabel" name="label_2_p">
       <property name="text">
-       <string>password</string>
+       <string>密码/password</string>
       </property>
      </widget>
     </item>
@@ -48,28 +48,28 @@
     <item row="4" column="0">
      <widget class="QLabel" name="label_5_g">
       <property name="text">
-       <string>privilege</string>
+       <string>权限/privilege</string>
       </property>
      </widget>
     </item>
     <item row="3" column="0">
      <widget class="QLabel" name="label_4_m">
       <property name="text">
-       <string>mailAddr</string>
+       <string>邮箱/mailAddr</string>
       </property>
      </widget>
     </item>
     <item row="0" column="0">
      <widget class="QLabel" name="label_1_u">
       <property name="text">
-       <string>username</string>
+       <string>用户名/username</string>
       </property>
      </widget>
     </item>
     <item row="2" column="0">
      <widget class="QLabel" name="label_3_n">
       <property name="text">
-       <string>name</string>
+       <string>姓名/name</string>
       </property>
      </widget>
     </item>
@@ -85,7 +85,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Submit</string>
+    <string>提交/Submit</string>
    </property>
   </widget>
  </widget>

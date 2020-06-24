@@ -1,7 +1,7 @@
 #include "mainwidget.h"
 #include "ui_mainwidget.h"
 #include "widget.h"
-#include <qinputdialog.h>
+#include <QInputDialog>
 
 MainWidget::MainWidget(QWidget *parent) :
     QWidget(parent),
@@ -38,17 +38,23 @@ void MainWidget::init() {// Other features can also be added here.
     ui->label_Welcome->repaint();
 }
 
-void MainWidget::exit() {
+void MainWidget::exit() {// WARNING: 此处不区分是否成功，均退出mainwidget
     Widget::SendMessage("exit");
-    QString logoutRecv = Widget::RecvMessage();
+//    QString recv = Widget::RecvMessage();
     Widget::SimpleMessageBox("写好了", "退出程序成功");
+    Widget::SimpleMessageBox("写好了", "Bye, " + cur_username + "!\nHave a nice day!");
     hide();
 }
 
-void MainWidget::clean() {
+void MainWidget::clean() {// 文档要求中clean只会有0的返回值，但安全起见特判了
     Widget::SendMessage("clean");
-    QString logoutRecv = Widget::RecvMessage();
-    Widget::SimpleMessageBox("写好了", "清除成功");
+    QString recv = Widget::RecvMessage();
+    if (recv == "0\n") {
+        Widget::SimpleMessageBox("写好了", "清除成功");
+    }
+    else {
+        Widget::SimpleMessageBox("写好了", "清除失败");
+    }
 }
 
 void MainWidget::logout() {
@@ -60,10 +66,13 @@ void MainWidget::logout() {
         Widget::SimpleMessageBox("鸽了，没收", "还没收到信息呢，也不知道成功了没有");
     }
     else {
-        if (logoutRecv == "0\n") Widget::SimpleMessageBox("写好了", "登出成功");
+        if (logoutRecv == "0\n") {
+            Widget::SimpleMessageBox("写好了", "登出成功");
+            Widget::SimpleMessageBox("写好了", "Bye, " + cur_username + "!\nHave a nice day!");
+            hide();
+        }
         else Widget::SimpleMessageBox("写好了", "登出失败");
     }
-    hide();
 }
 
 void MainWidget::add_user() {
@@ -138,7 +147,7 @@ void MainWidget::delete_train() {
     else {
         if (recv == "-1\n") Widget::SimpleMessageBox("写好了", "删除车次失败");
         else {
-            Widget::SimpleMessageBox("写好了", "删除车次成功：\n" + recv);
+            Widget::SimpleMessageBox("写好了", "删除车次成功");
         }
     }
 }
@@ -164,7 +173,7 @@ void MainWidget::query_profile() {
     }
     else {
         if (recv == "-1\n") Widget::SimpleMessageBox("写好了", "查询个人信息失败");
-        else Widget::SimpleMessageBox("写好了", "查询个人信息成功：\n" + recv);
+        else Widget::SimpleMessageBox("写好了", "查询个人信息成功：\nUsername Name Mail Privilege\n" + recv);
     }
 }
 
@@ -186,7 +195,7 @@ void MainWidget::refund_ticket() {
     else {
         if (recv == "-1\n") Widget::SimpleMessageBox("写好了", "退票失败");
         else {
-            Widget::SimpleMessageBox("写好了", "退票成功：\n" + recv);
+            Widget::SimpleMessageBox("写好了", "退票成功");
             query_order();
         }
     }
@@ -209,7 +218,7 @@ void MainWidget::release_train() {
     else {
         if (recv == "-1\n") Widget::SimpleMessageBox("写好了", "发布车次失败");
         else {
-            Widget::SimpleMessageBox("写好了", "发布车次成功：\n" + recv);
+            Widget::SimpleMessageBox("写好了", "发布车次成功：\n" + text);
         }
     }
 }

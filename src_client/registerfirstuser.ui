@@ -11,19 +11,19 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>注册第一个用户</string>
+   <string>注册首个用户 Register First User</string>
   </property>
   <widget class="QPushButton" name="do_register">
    <property name="geometry">
     <rect>
-     <x>240</x>
+     <x>230</x>
      <y>230</y>
-     <width>80</width>
+     <width>91</width>
      <height>20</height>
     </rect>
    </property>
    <property name="text">
-    <string>注册</string>
+    <string>注册/Register</string>
    </property>
   </widget>
   <widget class="QWidget" name="gridLayoutWidget">
@@ -37,26 +37,30 @@
    </property>
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="1">
-     <widget class="QLineEdit" name="username_inputbox"/>
+     <widget class="QLineEdit" name="username_inputbox">
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
     </item>
     <item row="0" column="0">
      <widget class="QLabel" name="label">
       <property name="text">
-       <string>username</string>
+       <string>用户名/username</string>
       </property>
      </widget>
     </item>
     <item row="3" column="0">
      <widget class="QLabel" name="label_4">
       <property name="text">
-       <string>mail_addr</string>
+       <string>邮箱/mailAddr</string>
       </property>
      </widget>
     </item>
     <item row="2" column="0">
      <widget class="QLabel" name="label_3">
       <property name="text">
-       <string>name</string>
+       <string>姓名/name</string>
       </property>
      </widget>
     </item>
@@ -66,7 +70,7 @@
     <item row="1" column="0">
      <widget class="QLabel" name="label_2">
       <property name="text">
-       <string>password</string>
+       <string>密码/password</string>
       </property>
      </widget>
     </item>

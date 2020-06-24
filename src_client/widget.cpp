@@ -23,15 +23,14 @@ Widget::~Widget() {
 }
 
 void Widget::connect_server() {
-    login_widget->show();
-    /*socket->connectToHost(ui->lineEdit->text(), 11031);
+    socket->connectToHost(ui->lineEdit->text(), 11031);
     if( socket->waitForConnected(5000) ) {
         SimpleMessageBox("砬对话框", "连接成功");
         hide();
         login_widget->show();
     } else {
         SimpleMessageBox("针难人对话框", "你在开玩笑");
-    }*/
+    }
 }
 
 void Widget::SimpleMessageBox( const QString &title, const QString &text ) {
@@ -46,29 +45,31 @@ void Widget::PigeonBox() {
 }
 
 void Widget::SendMessage( const QString &msg ) {
-    Widget::SimpleMessageBox("", "SendMessage: " + msg);
-    /*if( socket->state() == QAbstractSocket::ConnectedState ) {
-        socket->write(msg.toLatin1());
+    Widget::SimpleMessageBox("", msg);
+    if( socket->state() == QAbstractSocket::ConnectedState ) {
+        socket->write(msg.toUtf8());
+        int tmp = 0;
+        socket->write( reinterpret_cast<char*>(&tmp), 4 );
         socket->flush();
         Widget::SimpleMessageBox("砬对话框", "送出去了");
     } else {
         Widget::SimpleMessageBox("针难人对话框", "服务器鸽了，关闭程序");
         exit(0);
-    }*/
+    }
 }
 
 QString Widget::RecvMessage() { // "over" if over
-    Widget::SimpleMessageBox("", "RecvMessage");
-    return "Pigeoned";
-    /*if( socket->state() == QAbstractSocket::ConnectedState ) {
+    if( socket->state() == QAbstractSocket::ConnectedState ) {
         QByteArray buffer;
         while(1) {
+//            Widget::SimpleMessageBox("cerr", "here1");
             buffer = socket->readAll();
             if( buffer.isEmpty() == false ) break;
             QTest::qWait(1000);
         }
         QString ans = buffer;
         while(1) {
+//            Widget::SimpleMessageBox("cerr", "here2");
             buffer = socket->readAll();
             if( buffer.isEmpty() ) break;
             ans += buffer;
@@ -79,6 +80,5 @@ QString Widget::RecvMessage() { // "over" if over
         Widget::SimpleMessageBox("针难人对话框", "服务器鸽了，关闭程序");
         exit(0);
         return QString();
-    }*/
+    }
 }
-

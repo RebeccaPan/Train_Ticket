@@ -1,7 +1,7 @@
 #include "ticket_operation.h"
 #include "ui_ticket_operation.h"
 #include "widget.h"
-#include "QInputDialog"
+#include <QInputDialog>
 
 TicketOperation::TicketOperation(QWidget *parent) :
     QWidget(parent),
@@ -23,13 +23,6 @@ void TicketOperation::do_query_ticket() {
     queryTicketCmd += " -t " + ui->lineEdit_to->text();
     queryTicketCmd += " -d " + ui->lineEdit_date->text();
 
-    // TODO -p time/cost
-    /*bool ok;
-    QString text = QInputDialog::getText(this, tr("refund_ticket"), tr("请输入order序号"), QLineEdit::Normal, "", &ok);
-    if (text.isEmpty()) text = QInputDialog::getText(this, tr("refund_ticket"), tr("请务必输入order序号"), QLineEdit::Normal, "", &ok);
-    if (text.isEmpty()) return;
-    if (ok && !text.isEmpty()) queryTicketCmd += " -p " + text;*/
-
     QStringList items;
     items << tr("time") << tr("cost");
     bool ok;
@@ -45,8 +38,8 @@ void TicketOperation::do_query_ticket() {
         Widget::SimpleMessageBox("鸽了，没收", "还没收到信息呢，也不知道成功了没有");
     }
     else {
-        if (queryTicketRecv == "0\n") Widget::SimpleMessageBox("写好了", "查票成功");
-        else Widget::SimpleMessageBox("写好了", "查票失败");
+        if (queryTicketRecv == "-1\n") Widget::SimpleMessageBox("写好了", "查票失败");
+        else Widget::SimpleMessageBox("写好了", "查票成功："+ queryTicketRecv);
     }
 }
 
@@ -75,8 +68,8 @@ void TicketOperation::do_query_transfer() {
         Widget::SimpleMessageBox("鸽了，没收", "还没收到信息呢，也不知道成功了没有");
     }
     else {
-        if (queryTransferRecv == "0\n") Widget::SimpleMessageBox("写好了", "查换乘票成功");
-        else Widget::SimpleMessageBox("写好了", "查换乘票失败");
+        if (queryTransferRecv == "-1\n") Widget::SimpleMessageBox("写好了", "查换乘票失败");
+        else Widget::SimpleMessageBox("写好了", "查换乘票成功：" + queryTransferRecv);
     }
 }
 
@@ -118,8 +111,13 @@ void TicketOperation::do_buy_ticket() {
         Widget::SimpleMessageBox("鸽了，没收", "还没收到信息呢，也不知道成功了没有");
     }
     else {
-        if (recv == "0\n") Widget::SimpleMessageBox("写好了", "购票成功");
-        else Widget::SimpleMessageBox("写好了", "购票失败");
+        if (recv == "-1\n") Widget::SimpleMessageBox("写好了", "购票失败");
+        else {
+            if(recv == "queue\n") Widget::SimpleMessageBox("写好了", "购票已加入候补队列");
+            else {
+                Widget::SimpleMessageBox("写好了", "购票成功，总票价为" + recv + "元");
+            }
+        }
     }
 }
 

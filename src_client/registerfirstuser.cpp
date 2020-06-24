@@ -16,12 +16,12 @@ void RegisterFirstUser::do_register() {
     if(ui->name_inputbox->text() == "")      {Widget::SimpleMessageBox("", "请填写name"); return;}
     if(ui->mail_addr_inputbox->text() == "") {Widget::SimpleMessageBox("", "请填写mail_addr"); return;}
 
-    QString registerCmd = "add_user -c NULL";
+    QString registerCmd = "add_user -c ignoredVal";
     registerCmd += " -u " + ui->username_inputbox->text();
     registerCmd += " -p " + ui->password_inputbox->text();
     registerCmd += " -n " + ui->name_inputbox->text();
     registerCmd += " -m " + ui->mail_addr_inputbox->text();
-    registerCmd += " -g NULL";
+    registerCmd += " -g 10";
 
     Widget::SendMessage(registerCmd);
     QString registerRecv = Widget::RecvMessage();
@@ -29,10 +29,12 @@ void RegisterFirstUser::do_register() {
         Widget::SimpleMessageBox("鸽了，没收", "还没收到信息呢，也不知道成功了没有");
     }
     else {
-        if (registerRecv == "0\n") Widget::SimpleMessageBox("实际上还没写呢", "注册成功");
-        else Widget::SimpleMessageBox("实际上还没写呢", "注册失败");
+        if (registerRecv == "0\n") {
+            Widget::SimpleMessageBox("写好了", "注册成功");
+            hide();
+        }
+        else Widget::SimpleMessageBox("写好了", "注册失败");
     }
-    hide();
 }
 
 RegisterFirstUser::~RegisterFirstUser() {

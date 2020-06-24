@@ -6,19 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>533</width>
+    <height>344</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>添加列车 Add Train</string>
   </property>
   <widget class="QWidget" name="gridLayoutWidget">
    <property name="geometry">
     <rect>
      <x>30</x>
      <y>10</y>
-     <width>311</width>
+     <width>421</width>
      <height>256</height>
     </rect>
    </property>
@@ -128,14 +128,40 @@
   <widget class="QPushButton" name="do_add_train">
    <property name="geometry">
     <rect>
-     <x>280</x>
-     <y>270</y>
+     <x>390</x>
+     <y>280</y>
      <width>75</width>
      <height>23</height>
     </rect>
    </property>
    <property name="text">
-    <string>Submit</string>
+    <string>提交/Submit</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_6">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>300</y>
+     <width>321</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>“什么？你问输入格式？那你一定不是全知全能的管理员。”</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_7">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>320</y>
+     <width>491</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>&quot;What? You don't know the Input Format? Then you cannot be the omnipresent ADMIN.&quot;</string>
    </property>
   </widget>
  </widget>

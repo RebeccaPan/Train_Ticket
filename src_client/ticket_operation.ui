@@ -6,19 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>463</width>
+    <height>323</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>票务操作 Ticket Operation</string>
   </property>
   <widget class="QWidget" name="gridLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>45</x>
-     <y>59</y>
-     <width>191</width>
+     <x>270</x>
+     <y>70</y>
+     <width>181</width>
      <height>101</height>
     </rect>
    </property>
@@ -26,26 +26,30 @@
     <item row="1" column="0">
      <widget class="QLabel" name="label_2">
       <property name="text">
-       <string>From</string>
+       <string>起始站/From</string>
       </property>
      </widget>
     </item>
     <item row="0" column="0">
      <widget class="QLabel" name="label">
       <property name="text">
-       <string>Date</string>
+       <string>日期/Date</string>
       </property>
      </widget>
     </item>
     <item row="2" column="0">
      <widget class="QLabel" name="label_3">
       <property name="text">
-       <string>To</string>
+       <string>终点站/To</string>
       </property>
      </widget>
     </item>
     <item row="0" column="1">
-     <widget class="QLineEdit" name="lineEdit_date"/>
+     <widget class="QLineEdit" name="lineEdit_date">
+      <property name="text">
+       <string>（格式：01-31）</string>
+      </property>
+     </widget>
     </item>
     <item row="1" column="1">
      <widget class="QLineEdit" name="lineEdit_from"/>
@@ -55,38 +59,74 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="horizontalLayoutWidget">
+  <widget class="QWidget" name="verticalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>119</x>
-     <y>190</y>
-     <width>261</width>
-     <height>71</height>
+     <x>280</x>
+     <y>220</y>
+     <width>160</width>
+     <height>83</height>
     </rect>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QPushButton" name="do_1query">
       <property name="text">
-       <string>Query Ticket</string>
+       <string>查票/Query Ticket</string>
       </property>
      </widget>
     </item>
     <item>
      <widget class="QPushButton" name="do_2transfer">
       <property name="text">
-       <string>Query Transfer</string>
+       <string>查询换乘/Query Transfer</string>
       </property>
      </widget>
     </item>
     <item>
      <widget class="QPushButton" name="do_3buy">
       <property name="text">
-       <string>Buy Ticket</string>
+       <string>购票/Buy Ticket</string>
       </property>
      </widget>
     </item>
    </layout>
+  </widget>
+  <widget class="QCalendarWidget" name="calendarWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>248</width>
+     <height>197</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>220</y>
+     <width>111</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>上侧日历供您参考。</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_5">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>240</y>
+     <width>211</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>The calendar is for your reference.</string>
+   </property>
   </widget>
  </widget>
  <resources/>

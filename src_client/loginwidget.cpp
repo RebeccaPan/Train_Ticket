@@ -36,12 +36,15 @@ void LoginWidget::login() {
         Widget::SimpleMessageBox("鸽了，没收", "还没收到信息呢，也不知道成功了没有");
     }
     else {
-        if (loginRecv == "0\n") Widget::SimpleMessageBox("写好了", "登陆成功");
-        else Widget::SimpleMessageBox("写好了", "登陆失败");
+        if (loginRecv == "0\n") {
+            Widget::SimpleMessageBox("写好了", "登陆成功");
+            hide();
+            main_widget->cur_username = ui->lineEdit_username->text();
+            main_widget->init();
+            main_widget->show();
+        }
+        else {
+            Widget::SimpleMessageBox("写好了", "登陆失败");
+        }
     }
-
-    hide();
-    main_widget->cur_username = ui->lineEdit_username->text();
-    main_widget->init();
-    main_widget->show();
 }

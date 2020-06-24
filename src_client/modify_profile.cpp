@@ -17,23 +17,25 @@ void ModifyProfile::do_modify_profile() {
     if(ui->lineEdit_4_m->text() == "") {Widget::SimpleMessageBox("", "请填写mailAddr"); return;}
     if(ui->lineEdit_5_g->text() == "") {Widget::SimpleMessageBox("", "请填写privilege"); return;}
 
-    QString addUserCmd = "modify_profile -c " + cur_username;
-    addUserCmd += " -u " + ui->lineEdit_1_u->text();
-    if (ui->lineEdit_2_p->text() != "（选填）") addUserCmd += " -p " + ui->lineEdit_2_p->text();
-    if (ui->lineEdit_3_n->text() != "（选填）") addUserCmd += " -n " + ui->lineEdit_3_n->text();
-    if (ui->lineEdit_4_m->text() != "（选填）") addUserCmd += " -m " + ui->lineEdit_4_m->text();
-    if (ui->lineEdit_5_g->text() != "（选填）") addUserCmd += " -g " + ui->lineEdit_5_g->text();
+    QString cmd = "modify_profile -c " + cur_username;
+    cmd += " -u " + ui->lineEdit_1_u->text();
+    if (ui->lineEdit_2_p->text() != "（选填）") cmd += " -p " + ui->lineEdit_2_p->text();
+    if (ui->lineEdit_3_n->text() != "（选填）") cmd += " -n " + ui->lineEdit_3_n->text();
+    if (ui->lineEdit_4_m->text() != "（选填）") cmd += " -m " + ui->lineEdit_4_m->text();
+    if (ui->lineEdit_5_g->text() != "（选填）") cmd += " -g " + ui->lineEdit_5_g->text();
 
-    Widget::SendMessage(addUserCmd);
-    QString addUserRecv = Widget::RecvMessage();
-    if (addUserRecv == "Pigeoned") {
+    Widget::SendMessage(cmd);
+    QString recv = Widget::RecvMessage();
+    if (recv == "Pigeoned") {
         Widget::SimpleMessageBox("鸽了，没收", "还没收到信息呢，也不知道成功了没有");
     }
     else {
-        if (addUserRecv == "0\n") Widget::SimpleMessageBox("实际上还没写呢", "添加用户成功");
-        else Widget::SimpleMessageBox("实际上还没写呢", "添加用户失败");
+        if (recv == "-1\n") Widget::SimpleMessageBox("写好了", "更改用户信息失败");
+        else {
+            Widget::SimpleMessageBox("写好了", "更改用户信息成功:\n" + recv);
+            hide();
+        }
     }
-    hide();
 }
 
 ModifyProfile::~ModifyProfile() {
