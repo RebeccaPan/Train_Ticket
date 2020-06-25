@@ -10,8 +10,41 @@
     <height>323</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>Consolas</family>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>票务操作 Ticket Operation</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QPushButton {
+	font:10pt &quot;Consolas&quot;;
+	border:2px groove white;border-radius:10px;padding:2px 4px;
+	background-color: rgb(255,108,0);color: rgb(255,255,255);
+}
+
+QPushButton#do_1query {
+	font:10pt &quot;Consolas&quot;;
+	border:2px groove grey;border-radius:10px;padding:2px 4px;
+	background-color: rgb(255,255,255);color: rgb(255,108,0);
+}
+
+QPushButton#do_2transfer {
+	font:10pt &quot;Consolas&quot;;
+	border:2px groove grey;border-radius:10px;padding:2px 4px;
+	background-color: rgb(255,255,255);color: rgb(255,108,0);
+}
+
+QLabel {
+	font:10pt &quot;Consolas&quot;;
+}
+
+QLineEdit {
+	font:10pt &quot;Consolas&quot;;
+	background-color: rgb(223,227,239);
+}</string>
   </property>
   <widget class="QWidget" name="gridLayoutWidget">
    <property name="geometry">
@@ -23,13 +56,6 @@
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="1" column="0">
-     <widget class="QLabel" name="label_2">
-      <property name="text">
-       <string>起始站/From</string>
-      </property>
-     </widget>
-    </item>
     <item row="0" column="0">
      <widget class="QLabel" name="label">
       <property name="text">
@@ -44,18 +70,25 @@
       </property>
      </widget>
     </item>
+    <item row="2" column="1">
+     <widget class="QLineEdit" name="lineEdit_to"/>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="lineEdit_from"/>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>起始站/From</string>
+      </property>
+     </widget>
+    </item>
     <item row="0" column="1">
      <widget class="QLineEdit" name="lineEdit_date">
       <property name="text">
        <string>（格式：01-31）</string>
       </property>
      </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QLineEdit" name="lineEdit_from"/>
-    </item>
-    <item row="2" column="1">
-     <widget class="QLineEdit" name="lineEdit_to"/>
     </item>
    </layout>
   </widget>
@@ -64,7 +97,7 @@
     <rect>
      <x>280</x>
      <y>220</y>
-     <width>160</width>
+     <width>171</width>
      <height>83</height>
     </rect>
    </property>
@@ -118,10 +151,10 @@
   <widget class="QLabel" name="label_5">
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>10</x>
      <y>240</y>
-     <width>211</width>
-     <height>16</height>
+     <width>245</width>
+     <height>14</height>
     </rect>
    </property>
    <property name="text">

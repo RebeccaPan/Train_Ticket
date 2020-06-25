@@ -6,6 +6,7 @@ AddTrain::AddTrain(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::AddTrain) {
     ui->setupUi(this);
+    this->setWindowIcon(QIcon(":/new/prefix1/Main"));
 
     connect(ui->do_add_train, SIGNAL(clicked()), this, SLOT(do_add_train()));
 }

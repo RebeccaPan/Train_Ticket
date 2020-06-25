@@ -10,8 +10,38 @@
     <height>300</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>Consolas</family>
+    <pointsize>10</pointsize>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>登录 Login</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget{background-color: rgb(254,255,250);}
+
+QPushButton {
+	font:10pt &quot;Consolas&quot;;
+	border:2px groove white;border-radius:10px;padding:2px 4px;
+	background-color: rgb(255,108,0);color: rgb(255,255,255);
+}
+
+QPushButton#pushButton {
+	font:10pt &quot;Consolas&quot;;
+	border:2px groove grey;border-radius:10px;padding:2px 4px;
+	background-color: rgb(255,255,255);color: rgb(255,108,0);
+}
+
+QLabel {
+	font:10pt &quot;Consolas&quot;;
+}
+
+QLineEdit {
+	font:10pt &quot;Consolas&quot;;
+	background-color: rgb(223,227,239);
+}</string>
   </property>
   <widget class="QWidget" name="gridLayoutWidget">
    <property name="geometry">
@@ -26,14 +56,14 @@
     <item row="0" column="0">
      <widget class="QLabel" name="label">
       <property name="text">
-       <string>用户名/username</string>
+       <string>用户名/Username</string>
       </property>
      </widget>
     </item>
     <item row="1" column="0">
      <widget class="QLabel" name="label_2">
       <property name="text">
-       <string>密码/password</string>
+       <string>密码/Password</string>
       </property>
      </widget>
     </item>
@@ -50,7 +80,7 @@
     <rect>
      <x>50</x>
      <y>190</y>
-     <width>295</width>
+     <width>318</width>
      <height>80</height>
     </rect>
    </property>
@@ -58,7 +88,7 @@
     <item>
      <widget class="QPushButton" name="pushButton">
       <property name="text">
-       <string>注册第一个用户/Register first user</string>
+       <string>注册首个用户/Register first user</string>
       </property>
      </widget>
     </item>

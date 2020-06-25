@@ -22,6 +22,8 @@ private slots:
     void register_first_user();
     void login();
 
+    void on_lineEdit_password_textEdited(const QString &arg1);
+
 private:
     Ui::LoginWidget *ui;
     MainWidget *main_widget;

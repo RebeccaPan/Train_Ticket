@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/new/prefix1">
+        <file alias="Ticket">Icons/Ticket.png</file>
+        <file alias="Train">Icons/Train.png</file>
+        <file alias="User">Icons/User.png</file>
+        <file alias="Main">Icons/Main1.png</file>
+        <file alias="bkg">Icons/bkg.png</file>
+    </qresource>
+</RCC>

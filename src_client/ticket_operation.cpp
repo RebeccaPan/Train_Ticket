@@ -7,6 +7,7 @@ TicketOperation::TicketOperation(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::TicketOperation) {
     ui->setupUi(this);
+    this->setWindowIcon(QIcon(":/new/prefix1/Main"));
 
     connect(ui->do_1query , SIGNAL(clicked()), this, SLOT(do_query_ticket()));
     connect(ui->do_2transfer, SIGNAL(clicked()), this, SLOT(do_query_transfer()));
@@ -39,7 +40,7 @@ void TicketOperation::do_query_ticket() {
     }
     else {
         if (queryTicketRecv == "-1\n") Widget::SimpleMessageBox("写好了", "查票失败");
-        else Widget::SimpleMessageBox("写好了", "查票成功："+ queryTicketRecv);
+        else Widget::SimpleMessageBox("写好了", "查票成功：\ntrainID FROM LEAVING_TIME -> TO ARRIVING_TIME PRICE SEAT\n"+ queryTicketRecv);
     }
 }
 
@@ -69,7 +70,7 @@ void TicketOperation::do_query_transfer() {
     }
     else {
         if (queryTransferRecv == "-1\n") Widget::SimpleMessageBox("写好了", "查换乘票失败");
-        else Widget::SimpleMessageBox("写好了", "查换乘票成功：" + queryTransferRecv);
+        else Widget::SimpleMessageBox("写好了", "查换乘票成功：\ntrainID FROM LEAVING_TIME -> TO ARRIVING_TIME PRICE SEAT\n" + queryTransferRecv);
     }
 }
 
@@ -115,7 +116,7 @@ void TicketOperation::do_buy_ticket() {
         else {
             if(recv == "queue\n") Widget::SimpleMessageBox("写好了", "购票已加入候补队列");
             else {
-                Widget::SimpleMessageBox("写好了", "购票成功，总票价为" + recv + "元");
+                Widget::SimpleMessageBox("写好了", "购票成功，总票价为：\n" + recv + "元");
             }
         }
     }

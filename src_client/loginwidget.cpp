@@ -6,6 +6,7 @@ LoginWidget::LoginWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::LoginWidget) {
     ui->setupUi(this);
+    this->setWindowIcon(QIcon(":/new/prefix1/Main"));
 
     main_widget = new MainWidget();
     register_first_user_widget = new RegisterFirstUser();
@@ -47,4 +48,8 @@ void LoginWidget::login() {
             Widget::SimpleMessageBox("写好了", "登陆失败");
         }
     }
+}
+
+void LoginWidget::on_lineEdit_password_textEdited(const QString &arg1) {
+    ui->lineEdit_password->setEchoMode(QLineEdit::Password);
 }

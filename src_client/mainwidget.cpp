@@ -7,13 +7,14 @@ MainWidget::MainWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::MainWidget) {
     ui->setupUi(this);
+    this->setWindowIcon(QIcon(":/new/prefix1/Main"));
 
     add_user_widget = new AddUser();
     add_train_widget = new AddTrain();
     modify_profile_widget = new ModifyProfile();
     ticket_operation_widget = new TicketOperation();
 
-    ui->ticket_button->setText("query_ticket\n\nquery_transfer\n\nbuy_ticket");
+    ui->ticket_button->setText("查票/query_ticket\n\n查询换乘/query_transfer\n\n买票/buy_ticket");
 
     connect(ui->exit_button, SIGNAL(clicked()), this, SLOT(exit()));
     connect(ui->clean_button, SIGNAL(clicked()), this, SLOT(clean()));

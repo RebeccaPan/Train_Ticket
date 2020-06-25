@@ -4,10 +4,13 @@
 
 QTcpSocket *Widget::socket = nullptr;
 
+bool isDeveloper = 0;
+
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Widget) {
     ui->setupUi(this);
+    this->setWindowIcon(QIcon(":/new/prefix1/Main"));
 
     assert( socket == nullptr );
     socket = new QTcpSocket();
@@ -25,16 +28,17 @@ Widget::~Widget() {
 void Widget::connect_server() {
     socket->connectToHost(ui->lineEdit->text(), 11031);
     if( socket->waitForConnected(5000) ) {
-        SimpleMessageBox("砬对话框", "连接成功");
+        SimpleMessageBox("砬对话框", "连接成功\nConnected");
         hide();
         login_widget->show();
     } else {
-        SimpleMessageBox("针难人对话框", "你在开玩笑");
+        SimpleMessageBox("针难人对话框", "你在开玩笑\nConnection Failure");
     }
 }
 
 void Widget::SimpleMessageBox( const QString &title, const QString &text ) {
     QMessageBox tmp_box;
+    tmp_box.setWindowIcon(QIcon(":/new/prefix1/Main"));
     tmp_box.setWindowTitle(title);
     tmp_box.setText(text);
     tmp_box.exec();
@@ -45,15 +49,15 @@ void Widget::PigeonBox() {
 }
 
 void Widget::SendMessage( const QString &msg ) {
-    Widget::SimpleMessageBox("", msg);
+    if (isDeveloper == 1) {Widget::SimpleMessageBox("开发者模式中/Developer mode", msg);}
     if( socket->state() == QAbstractSocket::ConnectedState ) {
         socket->write(msg.toUtf8());
         int tmp = 0;
         socket->write( reinterpret_cast<char*>(&tmp), 4 );
         socket->flush();
-        Widget::SimpleMessageBox("砬对话框", "送出去了");
+//        Widget::SimpleMessageBox("砬对话框", "送出去了");
     } else {
-        Widget::SimpleMessageBox("针难人对话框", "服务器鸽了，关闭程序");
+        Widget::SimpleMessageBox("针难人对话框", "服务器鸽了，关闭程序\nThe server is offline.");
         exit(0);
     }
 }
@@ -77,8 +81,12 @@ QString Widget::RecvMessage() { // "over" if over
         }
         return ans;
     } else {
-        Widget::SimpleMessageBox("针难人对话框", "服务器鸽了，关闭程序");
+        Widget::SimpleMessageBox("针难人对话框", "服务器鸽了，关闭程序\nThe server is offline.");
         exit(0);
         return QString();
     }
+}
+
+void Widget::on_developerCheck_stateChanged(int arg1) {
+    isDeveloper = 1-isDeveloper;
 }

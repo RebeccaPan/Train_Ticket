@@ -6,6 +6,7 @@ ModifyProfile::ModifyProfile(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ModifyProfile) {
     ui->setupUi(this);
+    this->setWindowIcon(QIcon(":/new/prefix1/Main"));
 
     connect(ui->do_modify_profile, SIGNAL(clicked()), this, SLOT(do_modify_profile()));
 }

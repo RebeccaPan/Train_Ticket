@@ -6,6 +6,7 @@ AddUser::AddUser(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::AddUser) {
     ui->setupUi(this);
+    this->setWindowIcon(QIcon(":/new/prefix1/Main"));
 
     connect(ui->do_add_user, SIGNAL(clicked()), this, SLOT(do_add_user()));
 }

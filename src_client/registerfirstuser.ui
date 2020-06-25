@@ -10,16 +10,39 @@
     <height>300</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>Consolas</family>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>注册首个用户 Register First User</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget{background-color: rgb(254,255,250);}
+
+QPushButton {
+	font:10pt &quot;Consolas&quot;;
+	border:2px groove white;border-radius:10px;padding:2px 4px;
+	background-color: rgb(255,108,0);color: rgb(255,255,255);
+}
+
+QLabel {
+	font:10pt &quot;Consolas&quot;;
+}
+
+QLineEdit {
+	font:10pt &quot;Consolas&quot;;
+	background-color: rgb(223,227,239);
+}</string>
   </property>
   <widget class="QPushButton" name="do_register">
    <property name="geometry">
     <rect>
      <x>230</x>
      <y>230</y>
-     <width>91</width>
-     <height>20</height>
+     <width>101</width>
+     <height>23</height>
     </rect>
    </property>
    <property name="text">
@@ -46,21 +69,21 @@
     <item row="0" column="0">
      <widget class="QLabel" name="label">
       <property name="text">
-       <string>用户名/username</string>
+       <string>用户名/Username</string>
       </property>
      </widget>
     </item>
     <item row="3" column="0">
      <widget class="QLabel" name="label_4">
       <property name="text">
-       <string>邮箱/mailAddr</string>
+       <string>邮箱/Mail</string>
       </property>
      </widget>
     </item>
     <item row="2" column="0">
      <widget class="QLabel" name="label_3">
       <property name="text">
-       <string>姓名/name</string>
+       <string>姓名/Name</string>
       </property>
      </widget>
     </item>
@@ -70,7 +93,7 @@
     <item row="1" column="0">
      <widget class="QLabel" name="label_2">
       <property name="text">
-       <string>密码/password</string>
+       <string>密码/Password</string>
       </property>
      </widget>
     </item>

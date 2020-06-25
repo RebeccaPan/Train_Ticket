@@ -6,6 +6,7 @@ RegisterFirstUser::RegisterFirstUser(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::RegisterFirstUser) {
     ui->setupUi(this);
+    this->setWindowIcon(QIcon(":/new/prefix1/Main"));
 
     connect(ui->do_register, SIGNAL(clicked()), this, SLOT(do_register()));
 }

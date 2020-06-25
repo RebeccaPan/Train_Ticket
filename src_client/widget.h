@@ -21,6 +21,7 @@ public:
 
 private slots:
     void connect_server();
+    void on_developerCheck_stateChanged(int arg1);
 
 public:
     static void SimpleMessageBox( const QString &title, const QString &text );

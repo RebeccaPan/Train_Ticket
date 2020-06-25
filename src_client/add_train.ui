@@ -6,20 +6,47 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>533</width>
-    <height>344</height>
+    <width>517</width>
+    <height>373</height>
    </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>Consolas</family>
+   </font>
   </property>
   <property name="windowTitle">
    <string>添加列车 Add Train</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget{background-color: rgb(254,255,250);}
+
+QPushButton {
+	font:10pt &quot;Consolas&quot;;
+	border:2px groove white;border-radius:10px;padding:2px 4px;
+	background-color: rgb(255,108,0);color: rgb(255,255,255);
+}
+
+QLabel {
+	font:10pt &quot;Consolas&quot;;
+}
+
+QLabel#label_7 {
+	font:8pt &quot;Consolas&quot;;
+}
+
+QLineEdit {
+	font:10pt &quot;Consolas&quot;;
+	background-color: rgb(223,227,239);
+}</string>
   </property>
   <widget class="QWidget" name="gridLayoutWidget">
    <property name="geometry">
     <rect>
      <x>30</x>
      <y>10</y>
-     <width>421</width>
-     <height>256</height>
+     <width>451</width>
+     <height>266</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
@@ -56,70 +83,70 @@
     <item row="2" column="0">
      <widget class="QLabel" name="label_3_n">
       <property name="text">
-       <string>seatNum</string>
+       <string>座位数/Seat Num</string>
       </property>
      </widget>
     </item>
     <item row="1" column="0">
      <widget class="QLabel" name="label_2_p">
       <property name="text">
-       <string>stationNum</string>
+       <string>车站数/Station Num</string>
       </property>
      </widget>
     </item>
     <item row="4" column="0">
      <widget class="QLabel" name="label_5_g">
       <property name="text">
-       <string>prices</string>
+       <string>各段价格/Prices</string>
       </property>
      </widget>
     </item>
     <item row="0" column="0">
      <widget class="QLabel" name="label_1_u">
       <property name="text">
-       <string>trainID</string>
+       <string>车次名称/TrainID</string>
       </property>
      </widget>
     </item>
     <item row="3" column="0">
      <widget class="QLabel" name="label_4_m">
       <property name="text">
-       <string>stations</string>
+       <string>各站名称/Stations</string>
       </property>
      </widget>
     </item>
     <item row="5" column="0">
      <widget class="QLabel" name="label">
       <property name="text">
-       <string>startTime</string>
+       <string>始发时间/Start Time</string>
       </property>
      </widget>
     </item>
     <item row="6" column="0">
      <widget class="QLabel" name="label_2">
       <property name="text">
-       <string>travelTimes</string>
+       <string>各段通行时间/Travel Times</string>
       </property>
      </widget>
     </item>
     <item row="7" column="0">
      <widget class="QLabel" name="label_3">
       <property name="text">
-       <string>stopoverTimes</string>
+       <string>各站停留时间/Stopover Times</string>
       </property>
      </widget>
     </item>
     <item row="8" column="0">
      <widget class="QLabel" name="label_4">
       <property name="text">
-       <string>saleDate</string>
+       <string>售卖日期/Sale Date</string>
       </property>
      </widget>
     </item>
     <item row="9" column="0">
      <widget class="QLabel" name="label_5">
       <property name="text">
-       <string>type</string>
+       <string>车次类型/Type</string>
       </property>
      </widget>
     </item>
@@ -128,9 +155,9 @@
   <widget class="QPushButton" name="do_add_train">
    <property name="geometry">
     <rect>
-     <x>390</x>
+     <x>410</x>
      <y>280</y>
-     <width>75</width>
+     <width>87</width>
      <height>23</height>
     </rect>
    </property>
@@ -142,7 +169,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>300</y>
+     <y>330</y>
      <width>321</width>
      <height>20</height>
     </rect>
@@ -155,13 +182,35 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>320</y>
+     <y>350</y>
      <width>491</width>
      <height>16</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Consolas</family>
+     <pointsize>8</pointsize>
+     <weight>50</weight>
+     <italic>false</italic>
+     <bold>false</bold>
+    </font>
+   </property>
    <property name="text">
-    <string>&quot;What? You don't know the Input Format? Then you cannot be the omnipresent ADMIN.&quot;</string>
+    <string>&quot;What? You don't know the Input Format? Then you cannot be the omniscient ADMIN.&quot;</string>
+   </property>
+  </widget>
+  <widget class="Line" name="line">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>320</y>
+     <width>118</width>
+     <height>3</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
    </property>
   </widget>
  </widget>
