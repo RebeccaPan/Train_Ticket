@@ -52,7 +52,9 @@ void trans() {
 			FD_SET(it, &st);
 			if( select(it+1, &st, nullptr, nullptr, &delay_tm) > 0 ) {
 				int sz = recv(it, buf, sizeof buf, 0);
+				if( sz <= 0 ) continue;
 				cout << buf << endl;
+				cerr << "[Recv]" << endl << buf << endl;
 				do_exit = strcmp(buf, "exit") == 0;
 				string send_msg;
 				while(1) {
@@ -64,8 +66,8 @@ void trans() {
 					send_msg += tmp;
 					send_msg += "\n";
 				}
-				send(it, send_msg.c_str(), send_msg.length()+1, 0);
-				// cerr << send_msg << endl;
+				bool scs = send(it, send_msg.c_str(), send_msg.length()+1, 0);
+				cerr << "[Send] " << (scs ? "Success" : "Fail") << endl << send_msg << endl;
 				// cerr << "do_exit = " << do_exit << endl;
 				if( do_exit ) break;
 			}
